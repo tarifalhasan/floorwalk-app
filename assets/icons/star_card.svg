@@ -1,0 +1,13 @@
+<svg width="33" height="31" viewBox="0 0 33 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 39243">
+<circle id="Ellipse 186" cx="13.0799" cy="13.242" r="12.2899" fill="#FFFAD2"/>
+<g id="star_rate_half">
+<mask id="mask0_30_2912" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="12" y="10" width="21" height="21">
+<rect id="Bounding box" x="12.7549" y="10.7842" width="19.6638" height="19.6638" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_30_2912)">
+<path id="star_rate_half_2" d="M22.5868 17.2569V22.0909L24.5532 23.6066L23.8158 21.1077L25.6593 19.7968H23.3652L22.5868 17.2569ZM17.5275 27.99L19.4324 21.7631L14.3936 18.1581H20.6204L22.5868 11.6035L24.5532 18.1581H30.7801L25.7412 21.7631L27.6461 27.99L22.5868 24.1392L17.5275 27.99Z" fill="#FCE301"/>
+</g>
+</g>
+</g>
+</svg>

@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import React from "react";
 import { Text, View } from "react-native";
 
 const Home = () => {
@@ -7,6 +6,7 @@ const Home = () => {
     <View>
       <Text>Home</Text>
       <Link href={"/Login"}>Go Login</Link>
+      <Link href={"/AuditorCertificationTest"}>AuditorCertificationTest</Link>
     </View>
   );
 };
