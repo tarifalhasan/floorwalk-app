@@ -47,7 +47,7 @@ export default function RootLayout() {
         name="AuditorCertificationTest"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="profile" options={{ headerShown: false }} />
+
       <Stack.Screen name="(auth)/Login" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)/Signup" options={{ headerShown: false }} />
       <Stack.Screen

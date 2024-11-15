@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -117,12 +118,14 @@ export default function SignUpScreen() {
                 </Pressable>
               </View>
             </View>
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={styles.loginText}>
-                Already have an account?{" "}
-                <Text style={styles.loginLink}>Log In</Text>
-              </Text>
-            </TouchableOpacity>
+            <Link href={"/Login"} asChild>
+              <TouchableOpacity>
+                <Text style={styles.loginText}>
+                  Already have an account?{" "}
+                  <Text style={styles.loginLink}>Log In</Text>
+                </Text>
+              </TouchableOpacity>
+            </Link>
             {/* reCAPTCHA placeholder */}
             <View style={styles.recaptcha}>
               <Text style={styles.recaptchaText}>

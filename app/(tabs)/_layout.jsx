@@ -51,6 +51,38 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="audit"
+        options={{
+          title: "Audit",
+          tabBarIcon: ({ focused }) => (
+            <View style={styles.iconContainer}>
+              <Image
+                tintColor={
+                  focused ? theme.colors.primary_100 : theme.colors.neutral_400
+                }
+                source={require("../../assets/icons/audit.png")}
+                style={{
+                  height: hp(3.8),
+                  width: hp(3.8),
+                }}
+              />
+              <Text
+                style={[
+                  styles.iconLabel,
+                  {
+                    color: focused
+                      ? theme.colors.primary_100
+                      : theme.colors.neutral_400,
+                  },
+                ]}
+              >
+                Audit
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="reports"
         options={{
           title: "Report",
