@@ -73,7 +73,6 @@ const Home = () => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <WelcomeBackCard title={item.title} />}
-          contentContainerStyle={styles.horizontalList}
         />
         <View
           style={{
