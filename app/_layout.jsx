@@ -9,11 +9,15 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MenuProvider } from "react-native-popup-menu";
 import "react-native-reanimated";
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -41,20 +45,32 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="AuditorCertificationTest"
-        options={{ headerShown: false }}
-      />
+    <MenuProvider>
+      <GestureHandlerRootView>
+        <BottomSheetModalProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="AuditorCertificationTest"
+              options={{ headerShown: false }}
+            />
 
-      <Stack.Screen name="(auth)/Login" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)/Signup" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="(auth)/PasswordRecovery"
-        options={{ headerTitle: "Password Recovery" }}
-      />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+            <Stack.Screen
+              name="(auth)/Login"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(auth)/Signup"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="(auth)/PasswordRecovery"
+              options={{ headerTitle: "Password Recovery" }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </MenuProvider>
   );
 }

@@ -1,12 +1,15 @@
-import { FilterMenu } from "@/components/FilterMenu";
+import FilterMenu from "@/components/FilterMenu";
 import Header from "@/components/Header";
 import PaymentCard from "@/components/payment/PaymentCard";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { Ionicons } from "@expo/vector-icons";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { useCallback, useRef, useState } from "react";
 import {
   FlatList,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,45 +17,70 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+const overviewData = [
+  { label: "Total Audits Conducted", value: "800" },
+  { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
+  { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
+  { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
+];
+const paymentData = [
+  {
+    id: "1",
+    title: "FloorWalk",
+    status: "Paid",
+    auditType: "Walk In",
+    auditDate: "09 August 2024",
+    fees: "₹ 800",
+    expectedDate: "09 August 2024",
+    paidOn: "09 August 2024",
+  },
+  {
+    id: "2",
+    title: "Inspection",
+    status: "Pending",
+    auditType: "Field Visit",
+    auditDate: "10 August 2024",
+    fees: "₹ 500",
+    expectedDate: "12 August 2024",
+    paidOn: "N/A",
+  },
+  {
+    id: "3",
+    title: "Survey Report",
+    status: "Paid",
+    auditType: "Online Submission",
+    auditDate: "11 August 2024",
+    fees: "₹ 1000",
+    expectedDate: "11 August 2024",
+    paidOn: "11 August 2024",
+  },
+];
 
 export default function PaymentScreen() {
-  const overviewData = [
-    { label: "Total Audits Conducted", value: "800" },
-    { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
-    { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
-    { label: "Total Fee Payments Transferred", value: "Rs. 46064" },
-  ];
+  const bottomSheetModalRef = useRef(null);
 
-  const paymentData = [
+  const [selectedFilter, setSelectedFilter] = useState("");
+
+  const handleFilterSelect = (item) => {
+    setSelectedFilter(item);
+  };
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+
+  const filterItems = [
     {
-      id: "1",
-      title: "FloorWalk",
-      status: "Paid",
-      auditType: "Walk In",
-      auditDate: "09 August 2024",
-      fees: "₹ 800",
-      expectedDate: "09 August 2024",
-      paidOn: "09 August 2024",
+      key: "paid",
+      label: "Paid",
     },
     {
-      id: "2",
-      title: "Inspection",
-      status: "Pending",
-      auditType: "Field Visit",
-      auditDate: "10 August 2024",
-      fees: "₹ 500",
-      expectedDate: "12 August 2024",
-      paidOn: "N/A",
-    },
-    {
-      id: "3",
-      title: "Survey Report",
-      status: "Paid",
-      auditType: "Online Submission",
-      auditDate: "11 August 2024",
-      fees: "₹ 1000",
-      expectedDate: "11 August 2024",
-      paidOn: "11 August 2024",
+      key: "pending",
+      label: "Pending",
     },
   ];
 
@@ -71,7 +99,25 @@ export default function PaymentScreen() {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* Payment Overview */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Overview</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: hp(1.2),
+            }}
+          >
+            <Text style={styles.sectionTitle}>Payment Overview</Text>
+            <TouchableOpacity onPress={handlePresentModalPress}>
+              <Image
+                resizeMethod="resize"
+                style={{
+                  width: hp(3.5),
+                  height: hp(3.5),
+                }}
+                source={require("@/assets/icons/privacy_tip.png")}
+              />
+            </TouchableOpacity>
+          </View>
 
           <FlatList
             data={overviewData}
@@ -98,6 +144,7 @@ export default function PaymentScreen() {
               flexDirection: "row",
               alignItems: "center",
               marginBottom: hp(2),
+              gap: wp(2),
             }}
           >
             <View style={[styles.searchContainer]}>
@@ -110,17 +157,28 @@ export default function PaymentScreen() {
                 <Ionicons name="search-outline" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
-            {/* <TouchableOpacity style={styles.filterButton}>
-              <Ionicons name="filter" size={24} color={theme.colors.primary} />
-            </TouchableOpacity> */}
-            <FilterMenu />
+            <FilterMenu
+              selectedFilter={selectedFilter}
+              onSelectFilter={handleFilterSelect}
+              filterItems={filterItems}
+            />
           </View>
 
           {paymentData.map((item) => (
             <PaymentCard key={item.id} item={item} />
           ))}
         </View>
+        {/* bottom modal */}
       </ScrollView>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        onChange={handleSheetChanges}
+        enableDismissOnClose
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <Text>Awesome 🎉</Text>
+        </BottomSheetView>
+      </BottomSheetModal>
     </ScreenWrapper>
   );
 }
@@ -195,7 +253,7 @@ const styles = StyleSheet.create({
     gap: wp(0.6),
     alignItems: "flex-start",
     marginHorizontal: wp(2),
-    maxWidth: 210,
+    width: wp(42),
   },
 
   borderLeft: {
