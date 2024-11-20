@@ -1,14 +1,15 @@
+import ScreenWrapper from "@/components/ScreenWrapper";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
-const Home = () => {
+const WelcomeScreen = () => {
   return (
-    <View>
-      <Text>Home</Text>
+    <ScreenWrapper bg="#fff">
+      <Text>WelcomeScreen</Text>
       <Link href={"/Login"}>Go Login</Link>
       <Link href={"/AuditorCertificationTest"}>AuditorCertificationTest</Link>
-    </View>
+    </ScreenWrapper>
   );
 };
 
-export default Home;
+export default WelcomeScreen;

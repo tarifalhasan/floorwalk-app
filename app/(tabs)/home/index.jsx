@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import AuditCard from "@/components/home/AuditCard";
 import { CertificationCard } from "@/components/home/CertificationCard";
 import WelcomeBackCard from "@/components/home/WelcomeBackCard";
 import ScreenWrapper from "@/components/ScreenWrapper";
@@ -16,6 +17,69 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+const certificationCardsData = [
+  {
+    title: "Auditor Certification Test",
+    description:
+      "This certification increases your chances of getting mystery audits. The higher the score, the better your chances.",
+    buttonText: "Get Certificate",
+    imageUrl:
+      "https://images.unsplash.com/photo-1566932769119-7a1fb6d7ce23?q=80&w=1470&auto=format&fit=crop",
+    bgImgSrc:
+      "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?q=80&w=1566&auto=format&fit=crop",
+    onPress: () => console.log("Auditor Certification pressed"),
+    id: 10,
+  },
+  {
+    title: "Marketing Certification Test",
+    description:
+      "Boost your marketing skills and demonstrate your expertise to clients with this certification.",
+    buttonText: "Start Now",
+    imageUrl:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1470&auto=format&fit=crop",
+    bgImgSrc:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1566&auto=format&fit=crop",
+    onPress: () => console.log("Marketing Certification pressed"),
+    id: 11,
+  },
+  {
+    title: "Leadership Training Certificate",
+    description:
+      "Enhance your leadership qualities and inspire teams with our advanced training program.",
+    buttonText: "Enroll Today",
+    imageUrl:
+      "https://images.unsplash.com/photo-1593642634443-44adaa06623a?q=80&w=1470&auto=format&fit=crop",
+    bgImgSrc:
+      "https://images.unsplash.com/photo-1518472745294-25d8fc9a53a9?q=80&w=1566&auto=format&fit=crop",
+    onPress: () => console.log("Leadership Training pressed"),
+    id: 12,
+  },
+  {
+    title: "Design Thinking Certification",
+    description:
+      "Unlock your creative potential and master design thinking with this comprehensive program.",
+    buttonText: "Join Now",
+    imageUrl:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1470&auto=format&fit=crop",
+    bgImgSrc:
+      "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?q=80&w=1566&auto=format&fit=crop",
+    onPress: () => console.log("Design Thinking Certification pressed"),
+    id: 13,
+  },
+  {
+    title: "AI and Machine Learning Certificate",
+    description:
+      "Dive into the world of artificial intelligence and machine learning with this intensive program.",
+    buttonText: "Get Started",
+    imageUrl:
+      "https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?q=80&w=1470&auto=format&fit=crop",
+    bgImgSrc:
+      "https://images.unsplash.com/photo-1581092795365-1759cf9b8f4f?q=80&w=1566&auto=format&fit=crop",
+    onPress: () => console.log("AI Certification pressed"),
+    id: 14,
+  },
+];
 
 const Home = () => {
   const welcomeCardsData = [
@@ -79,9 +143,21 @@ const Home = () => {
             marginTop: hp(2),
           }}
         >
-          <CertificationCard />
-          <CertificationCard />
+          {certificationCardsData.map((card, index) => (
+            <CertificationCard key={index} {...card} />
+          ))}
         </View>
+        <AuditCard
+          logo={
+            "https://images.unsplash.com/photo-1731877818770-820faabe2d4c?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
+          title="Nibav Home"
+          subtitle="Lifts Audits"
+          auditType="Walk In"
+          earnings={800}
+          reimbursement={0}
+          slug="nibav-home"
+        />
       </ScrollView>
     </ScreenWrapper>
   );

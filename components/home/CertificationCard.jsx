@@ -1,6 +1,7 @@
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import {
   Dimensions,
   Image,
@@ -17,6 +18,7 @@ export const CertificationCard = ({
   imageUrl = "https://images.unsplash.com/photo-1566932769119-7a1fb6d7ce23?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   onPress,
   bgImgSrc = "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?q=80&w=1566&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  id,
 }) => {
   return (
     <View style={styles.container}>
@@ -56,9 +58,11 @@ export const CertificationCard = ({
         <Text style={styles.description}>{description}</Text>
 
         {/* Button */}
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-          <Text style={styles.buttonText}>{buttonText}</Text>
-        </TouchableOpacity>
+        <Link asChild href={`/certificate/${id}`}>
+          <TouchableOpacity style={styles.button} onPress={onPress}>
+            <Text style={styles.buttonText}>{buttonText}</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
