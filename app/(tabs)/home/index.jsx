@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import AuditCard from "@/components/home/AuditCard";
-import { CertificationCard } from "@/components/home/CertificationCard";
+import CertificationCard from "@/components/home/CertificationCard";
+
 import WelcomeBackCard from "@/components/home/WelcomeBackCard";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { textStyles, theme } from "@/constants/theme";
@@ -17,6 +18,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { verticalScale } from "react-native-size-matters";
 
 const certificationCardsData = [
   {
@@ -29,7 +31,7 @@ const certificationCardsData = [
     bgImgSrc:
       "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?q=80&w=1566&auto=format&fit=crop",
     onPress: () => console.log("Auditor Certification pressed"),
-    id: 10,
+    slug: "1",
   },
   {
     title: "Marketing Certification Test",
@@ -41,7 +43,7 @@ const certificationCardsData = [
     bgImgSrc:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1566&auto=format&fit=crop",
     onPress: () => console.log("Marketing Certification pressed"),
-    id: 11,
+    slug: "2",
   },
   {
     title: "Leadership Training Certificate",
@@ -53,7 +55,7 @@ const certificationCardsData = [
     bgImgSrc:
       "https://images.unsplash.com/photo-1518472745294-25d8fc9a53a9?q=80&w=1566&auto=format&fit=crop",
     onPress: () => console.log("Leadership Training pressed"),
-    id: 12,
+    slug: "3",
   },
   {
     title: "Design Thinking Certification",
@@ -65,7 +67,7 @@ const certificationCardsData = [
     bgImgSrc:
       "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?q=80&w=1566&auto=format&fit=crop",
     onPress: () => console.log("Design Thinking Certification pressed"),
-    id: 13,
+    slug: "4",
   },
   {
     title: "AI and Machine Learning Certificate",
@@ -77,7 +79,7 @@ const certificationCardsData = [
     bgImgSrc:
       "https://images.unsplash.com/photo-1581092795365-1759cf9b8f4f?q=80&w=1566&auto=format&fit=crop",
     onPress: () => console.log("AI Certification pressed"),
-    id: 14,
+    slug: "6",
   },
 ];
 
@@ -130,7 +132,8 @@ const Home = () => {
         </View>
         <FlatList
           style={{
-            paddingTop: hp(2),
+            paddingTop: verticalScale(10),
+            paddingBottom: verticalScale(40),
           }}
           data={welcomeCardsData}
           horizontal
@@ -138,26 +141,34 @@ const Home = () => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <WelcomeBackCard title={item.title} />}
         />
+
+        {certificationCardsData.map((card, index) => (
+          <CertificationCard
+            key={card.slug}
+            title={card.title}
+            slug={card.slug}
+            description={card.description}
+            bgImgSrc={card.bgImgSrc}
+            imageUrl={card.imageUrl}
+          />
+        ))}
         <View
           style={{
-            marginTop: hp(2),
+            paddingBottom: verticalScale(20),
           }}
         >
-          {certificationCardsData.map((card, index) => (
-            <CertificationCard key={index} {...card} />
-          ))}
+          <AuditCard
+            logo={
+              "https://images.unsplash.com/photo-1731877818770-820faabe2d4c?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            }
+            title="Nibav Home"
+            subtitle="Lifts Audits"
+            auditType="Walk In"
+            earnings={800}
+            reimbursement={0}
+            slug="nibav-home"
+          />
         </View>
-        <AuditCard
-          logo={
-            "https://images.unsplash.com/photo-1731877818770-820faabe2d4c?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          }
-          title="Nibav Home"
-          subtitle="Lifts Audits"
-          auditType="Walk In"
-          earnings={800}
-          reimbursement={0}
-          slug="nibav-home"
-        />
       </ScrollView>
     </ScreenWrapper>
   );

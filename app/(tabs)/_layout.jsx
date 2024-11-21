@@ -1,20 +1,56 @@
 import { Tabs } from "expo-router";
 
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
+import { moderateScale, scale } from "react-native-size-matters";
 import { theme } from "../../constants/theme";
-import { hp } from "../../helpers/common";
+
+import { PlatformPressable } from "@react-navigation/elements";
+import * as Haptics from "expo-haptics";
+
+export function HapticTab(props) {
+  return (
+    <PlatformPressable
+      {...props}
+      onPressIn={(ev) => {
+        if (process.env.EXPO_OS === "ios") {
+          // Add a soft haptic feedback when pressing down on the tabs.
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        }
+        props.onPressIn?.(ev);
+      }}
+    />
+  );
+}
+
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          elevation: 0,
-          width: "100%",
-          borderTopWidth: 1,
-          borderTopColor: "#E2E8F0",
-          height: hp(9),
+        tabBarActiveTintColor: "#003C5D",
+        tabBarButton: HapticTab,
+        tabBarStyle: Platform.select({
+          ios: {
+            position: "absolute",
+            height: moderateScale(70),
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: moderateScale(10),
+          },
+          default: {
+            elevation: 0,
+            borderTopWidth: 1,
+            borderTopColor: "#E2E8F0",
+            height: moderateScale(70),
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: moderateScale(10),
+            paddingTop: 10,
+          },
+        }),
+        tabBarLabelStyle: {
+          fontSize: scale(11),
+          fontWeight: 300,
         },
       }}
     >
@@ -30,22 +66,10 @@ export default function TabLayout() {
                 }
                 source={require("../../assets/images/Home.png")}
                 style={{
-                  height: hp(3.8),
-                  width: hp(3.8),
+                  width: scale(30),
+                  height: scale(30),
                 }}
               />
-              <Text
-                style={[
-                  styles.iconLabel,
-                  {
-                    color: focused
-                      ? theme.colors.primary_100
-                      : theme.colors.neutral_400,
-                  },
-                ]}
-              >
-                Home
-              </Text>
             </View>
           ),
         }}
@@ -62,11 +86,11 @@ export default function TabLayout() {
                 }
                 source={require("../../assets/icons/audit.png")}
                 style={{
-                  height: hp(3.8),
-                  width: hp(3.8),
+                  width: scale(30),
+                  height: scale(30),
                 }}
               />
-              <Text
+              {/* <Text
                 style={[
                   styles.iconLabel,
                   {
@@ -77,7 +101,7 @@ export default function TabLayout() {
                 ]}
               >
                 Audit
-              </Text>
+              </Text> */}
             </View>
           ),
         }}
@@ -94,11 +118,11 @@ export default function TabLayout() {
                 }
                 source={require("../../assets/images/analytics.png")}
                 style={{
-                  height: hp(3.8),
-                  width: hp(3.8),
+                  width: scale(30),
+                  height: scale(30),
                 }}
               />
-              <Text
+              {/* <Text
                 style={[
                   styles.iconLabel,
                   {
@@ -109,7 +133,7 @@ export default function TabLayout() {
                 ]}
               >
                 Report
-              </Text>
+              </Text> */}
             </View>
           ),
         }}
@@ -126,11 +150,11 @@ export default function TabLayout() {
                 }
                 source={require("../../assets/images/account_balance_wallet.png")}
                 style={{
-                  height: hp(3.8),
-                  width: hp(3.8),
+                  width: scale(30),
+                  height: scale(30),
                 }}
               />
-              <Text
+              {/* <Text
                 style={[
                   styles.iconLabel,
                   {
@@ -141,7 +165,7 @@ export default function TabLayout() {
                 ]}
               >
                 Payment
-              </Text>
+              </Text> */}
             </View>
           ),
         }}
@@ -158,22 +182,10 @@ export default function TabLayout() {
                 }
                 source={require("../../assets/images/User.png")}
                 style={{
-                  height: hp(3.8),
-                  width: hp(3.8),
+                  width: scale(30),
+                  height: scale(30),
                 }}
               />
-              <Text
-                style={[
-                  styles.iconLabel,
-                  {
-                    color: focused
-                      ? theme.colors.primary_100
-                      : theme.colors.neutral_400,
-                  },
-                ]}
-              >
-                Profile
-              </Text>
             </View>
           ),
         }}
@@ -186,10 +198,9 @@ const styles = StyleSheet.create({
   iconContainer: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
   },
   iconLabel: {
-    fontSize: hp(1.5),
+    fontSize: moderateScale(7, 0.4),
     fontWeight: theme.fonts.bold,
   },
 });

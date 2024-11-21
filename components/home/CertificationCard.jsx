@@ -11,14 +11,14 @@ import {
   View,
 } from "react-native";
 
-export const CertificationCard = ({
+const CertificationCard = ({
   title = "Auditor Certification Test",
   description = "This certification increase your chances of getting mystery audits. The higher the score, better are the chances of getting mystery audits.",
   buttonText = "Get Certificate",
   imageUrl = "https://images.unsplash.com/photo-1566932769119-7a1fb6d7ce23?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   onPress,
   bgImgSrc = "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?q=80&w=1566&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  id,
+  slug = "100",
 }) => {
   return (
     <View style={styles.container}>
@@ -58,7 +58,7 @@ export const CertificationCard = ({
         <Text style={styles.description}>{description}</Text>
 
         {/* Button */}
-        <Link asChild href={`/certificate/${id}`}>
+        <Link asChild href={`/home/certificate/${slug}`}>
           <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
@@ -139,21 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// Usage Example:
-export default function App() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#f5f5f5",
-      }}
-    >
-      <CertificationCard
-        imageUrl="https://source.unsplash.com/random/800x600/?laptop,work"
-        onPress={() => console.log("Certificate button pressed")}
-      />
-    </View>
-  );
-}
+export default CertificationCard;

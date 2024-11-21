@@ -10,8 +10,10 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";

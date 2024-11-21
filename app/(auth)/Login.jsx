@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -39,7 +39,7 @@ export default function LoginScreen() {
         <ScreenWrapper bg="#ffff">
           <StatusBar style="dark" />
           <View style={styles.container}>
-            <Text style={styles.title}>Log In</Text>
+            <Text style={styles.title}>Log In sdd</Text>
             <Text style={styles.subtitle}>
               <Text style={{ fontWeight: "bold" }}>Login</Text> to your
               FloorWalk Shopper Portal

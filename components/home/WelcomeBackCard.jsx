@@ -1,6 +1,7 @@
 import { theme } from "@/constants/theme";
-import { hp, wp } from "@/helpers/common";
+import { hp } from "@/helpers/common";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { moderateScale, verticalScale } from "react-native-size-matters";
 import { CircularProgress } from "../CustomProgressBar";
 
 const WelcomeBackCard = () => {
@@ -34,9 +35,9 @@ const styles = StyleSheet.create({
     elevation: 4,
     flexDirection: "row",
     margin: 10,
-    paddingHorizontal: wp(4),
-    paddingVertical: hp(2),
-    gap: wp(4),
+    paddingHorizontal: moderateScale(10),
+    paddingVertical: verticalScale(16),
+    gap: 16,
     alignItems: "flex-start",
   },
   progressCircle: {
