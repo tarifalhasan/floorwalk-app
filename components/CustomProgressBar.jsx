@@ -1,9 +1,10 @@
-import { hp } from "@/helpers/common";
+import { theme } from "@/constants/theme";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { scale } from "react-native-size-matters";
 import Svg, { Circle, Path } from "react-native-svg";
 
 export const CircularProgress = ({
-  size = hp(12),
+  size = scale(80),
   strokeWidth = 7,
   progress = 65,
   letter = "S",
@@ -91,17 +92,17 @@ const styles = StyleSheet.create({
   avatarImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 100,
+    borderRadius: 500,
   },
   letter: {
-    fontSize: 32,
+    fontSize: scale(20),
     fontWeight: "bold",
     color: "#FFF",
   },
   percentage: {
     marginTop: 8,
-    fontSize: 16,
+    fontSize: scale(14),
     fontWeight: "600",
-    color: "#0066FF",
+    color: theme.colors.primary,
   },
 });

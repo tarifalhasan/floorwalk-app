@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 
 import { Image, Platform, StyleSheet, View } from "react-native";
-import { moderateScale, scale } from "react-native-size-matters";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 import { theme } from "../../constants/theme";
 
 import { PlatformPressable } from "@react-navigation/elements";
@@ -32,10 +32,11 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            height: moderateScale(70),
+            height: moderateScale(90),
             justifyContent: "center",
             alignItems: "center",
             paddingBottom: moderateScale(10),
+            paddingTop: verticalScale(12),
           },
           default: {
             elevation: 0,
