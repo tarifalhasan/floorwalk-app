@@ -46,11 +46,11 @@ export default function TabLayout() {
             justifyContent: "center",
             alignItems: "center",
             paddingBottom: moderateScale(10),
-            paddingTop: 10,
+            paddingTop: scale(10),
           },
         }),
         tabBarLabelStyle: {
-          fontSize: scale(11),
+          fontSize: scale(13),
           fontWeight: 300,
         },
       }}
@@ -69,6 +69,7 @@ export default function TabLayout() {
                 style={{
                   width: scale(30),
                   height: scale(30),
+                  marginBottom: verticalScale(5),
                 }}
               />
             </View>
@@ -89,20 +90,9 @@ export default function TabLayout() {
                 style={{
                   width: scale(30),
                   height: scale(30),
+                  marginBottom: verticalScale(5),
                 }}
               />
-              {/* <Text
-                style={[
-                  styles.iconLabel,
-                  {
-                    color: focused
-                      ? theme.colors.primary_100
-                      : theme.colors.neutral_400,
-                  },
-                ]}
-              >
-                Audit
-              </Text> */}
             </View>
           ),
         }}
@@ -121,20 +111,9 @@ export default function TabLayout() {
                 style={{
                   width: scale(30),
                   height: scale(30),
+                  marginBottom: verticalScale(5),
                 }}
               />
-              {/* <Text
-                style={[
-                  styles.iconLabel,
-                  {
-                    color: focused
-                      ? theme.colors.primary_100
-                      : theme.colors.neutral_400,
-                  },
-                ]}
-              >
-                Report
-              </Text> */}
             </View>
           ),
         }}
@@ -153,20 +132,9 @@ export default function TabLayout() {
                 style={{
                   width: scale(30),
                   height: scale(30),
+                  marginBottom: verticalScale(5),
                 }}
               />
-              {/* <Text
-                style={[
-                  styles.iconLabel,
-                  {
-                    color: focused
-                      ? theme.colors.primary_100
-                      : theme.colors.neutral_400,
-                  },
-                ]}
-              >
-                Payment
-              </Text> */}
             </View>
           ),
         }}
@@ -185,6 +153,7 @@ export default function TabLayout() {
                 style={{
                   width: scale(30),
                   height: scale(30),
+                  marginBottom: verticalScale(5),
                 }}
               />
             </View>

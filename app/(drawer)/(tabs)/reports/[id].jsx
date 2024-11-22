@@ -75,10 +75,12 @@ export default function AuditReportScreen() {
   const performedTheAuditReportSubmit = async () => {
     performedTheAuditBottomSheetModalRef.current?.close();
     Toast.success("Audit Report Submited");
+    setAuditReportOpen(false);
   };
   const performedTheAuditReportCancel = async () => {
     performedTheAuditBottomSheetModalRef.current?.close();
     Toast.warn("Audit Report Cancel");
+    setAuditReportOpen(false);
   };
   return (
     <ScreenWrapper bg="#fff">
@@ -90,7 +92,7 @@ export default function AuditReportScreen() {
           <Ionicons name="chevron-back" size={24} color="#9CA3AF" />
         </Pressable>
         <Text style={styles.headerTitle}>View Report</Text>
-        <View style={styles.headerRight}>
+        <View>
           <DrawerToggleButton tintColor="#9CA3AF" />
         </View>
       </View>
@@ -437,6 +439,7 @@ export default function AuditReportScreen() {
               style={{
                 alignItems: "center",
                 justifyContent: "center",
+                paddingBottom: verticalScale(10),
               }}
             >
               <TouchableOpacity onPress={onHavingTrouble}>

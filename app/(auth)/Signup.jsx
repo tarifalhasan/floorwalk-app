@@ -105,12 +105,12 @@ export default function SignupScreen() {
               searchStyles={{
                 backgroundColor: "#fff",
                 height: scale(45),
-                zIndex: 20,
+                zIndex: 10,
               }}
               dropdownStyles={{
                 backgroundColor: "#fff",
                 opacity: 1,
-                zIndex: 2000,
+                zIndex: 10,
                 position: "relative",
               }}
             />
@@ -223,6 +223,9 @@ export default function SignupScreen() {
           }}
           keyExtractor={(item, index) => item.key + index}
           contentContainerStyle={styles.content}
+          style={{
+            zIndex: 3,
+          }}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -243,6 +246,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: verticalScale(90),
     left: 0,
+    zIndex: 1,
   },
   rightDecoration: {
     width: moderateScale(70),
@@ -250,6 +254,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: verticalScale(90),
     right: 0,
+    zIndex: 1,
   },
   content: {
     padding: moderateScale(20),
@@ -295,6 +300,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: moderateScale(5),
     height: verticalScale(45),
+    zIndex: 10,
   },
   phoneInput: {
     flex: 1,
