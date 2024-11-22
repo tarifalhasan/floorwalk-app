@@ -10,12 +10,12 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import Container from "toastify-react-native";
 
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MenuProvider } from "react-native-popup-menu";
@@ -51,9 +51,12 @@ export default function RootLayout() {
     <MenuProvider>
       <GestureHandlerRootView>
         <BottomSheetModalProvider>
-          <Container position="top" />
+          <StatusBar style="dark" />
           <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(drawer)/(tabs)"
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="AuditorCertificationTest"
               options={{ headerShown: false }}
@@ -73,6 +76,7 @@ export default function RootLayout() {
               options={{ headerTitle: "Password Recovery" }}
             />
             <Stack.Screen name="+not-found" />
+            <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
           </Stack>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>

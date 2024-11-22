@@ -7,11 +7,18 @@ import {
   MenuOptions,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { verticalScale } from "react-native-size-matters";
 
 const FilterMenu = ({ selectedFilter, onSelectFilter, filterItems }) => {
   return (
     <Menu>
-      <MenuTrigger>
+      <MenuTrigger
+        style={{
+          height: verticalScale(40),
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Ionicons name="filter" size={24} color={theme.colors.primary} />
       </MenuTrigger>
       <MenuOptions>

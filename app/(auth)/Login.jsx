@@ -1,11 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Link, useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { theme } from "@/constants/theme";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { useEvent } from "expo";
+import { Link, router } from "expo-router";
+import { useVideoPlayer, VideoView } from "expo-video";
 import { useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,198 +13,340 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Button from "../../components/Button";
-import ScreenWrapper from "../../components/ScreenWrapper";
-import { theme } from "../../constants/theme";
-import { wp } from "../../helpers/common";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+const videoSource =
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 export default function LoginScreen() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleLogin = () => {
+    // Implement login logic here
+    console.log("Login attempted with:", email, password);
+    router.push("/home");
+  };
+
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = true;
+    player.pause();
+  });
+
+  const { isPlaying } = useEvent(player, "playingChange", {
+    isPlaying: player.playing,
+  });
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-        contentContainerStyle={{
-          flexGrow: 1,
+    <ScrollView style={styles.container}>
+      <Image
+        style={{
+          width: moderateScale(70),
+          height: verticalScale(150),
+          position: "absolute",
+          top: verticalScale(90),
+          left: 0,
         }}
-      >
-        <ScreenWrapper bg="#ffff">
-          <StatusBar style="dark" />
-          <View style={styles.container}>
-            <Text style={styles.title}>Log In sdd</Text>
-            <Text style={styles.subtitle}>
-              <Text style={{ fontWeight: "bold" }}>Login</Text> to your
-              FloorWalk Shopper Portal
-            </Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email Id</Text>
-              <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  style={[styles.input, styles.passwordInput]}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                  placeholder="Password"
-                />
-                <Pressable
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.eyeIcon}
+        source={require("@/assets/images/left_login.png")}
+      />
+      <Image
+        style={{
+          width: moderateScale(70),
+          height: verticalScale(150),
+          position: "absolute",
+          top: verticalScale(90),
+          right: 0,
+        }}
+        source={require("@/assets/images/right_login.png")}
+      />
+      <Image
+        source={require("@/assets/images/logo.png")}
+        style={[styles.logo, {}]}
+        resizeMode="contain"
+      />
+      <View style={styles.content}>
+        {/* Logo */}
+        <View
+          style={{
+            paddingVertical: scale(30),
+          }}
+        >
+          <Text style={styles.welcomeTitle}>Welcome to</Text>
+          <Text style={styles.portalTitle}>
+            <Text style={styles.floorWalk}>FloorWalk</Text>
+            {"\n"}
+            Shopper Portal
+          </Text>
+          <View style={styles.loginOptions}>
+            <TouchableOpacity style={styles.loginOption}>
+              <Text style={styles.loginOptionText}>For Client login</Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <Feather name="user" size={scale(20)} color="#007DC1" />
+                <Text
+                  style={[
+                    styles.loginOptionText,
+                    {
+                      color: "#007DC1",
+                      textDecorationLine: "underline",
+                      fontWeight: "500",
+                    },
+                  ]}
                 >
-                  <Ionicons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
-                    size={24}
-                    color={theme.colors.neutral_400}
-                  />
-                </Pressable>
-              </View>
-            </View>
-
-            <TouchableOpacity onPress={() => router.push("PasswordRecovery")}>
-              <Text style={styles.forgotPassword}>Forgot Password ?</Text>
-            </TouchableOpacity>
-
-            {/* Placeholder for reCAPTCHA */}
-            <View style={styles.recaptcha}>
-              <Text style={styles.recaptchaText}>I'm not a robot</Text>
-
-              <Text style={styles.recaptchaFooter}>Privacy - Terms</Text>
-            </View>
-
-            <Button onPress={() => router.push("/home")} title={"Log In"} />
-
-            <Link asChild href={"/Signup"} style={styles.signupContainer}>
-              <TouchableOpacity onPress={() => {}}>
-                <Text style={styles.signupText}>
-                  Create Account{" "}
-                  <Text style={styles.signupSubtext}>(Sign Up)</Text>
+                  login ?
                 </Text>
-              </TouchableOpacity>
-            </Link>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.loginOption}>
+              <Text style={styles.loginOptionText}>For Agency login</Text>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <Feather name="users" size={scale(20)} color="#007DC1" />
+                <Text
+                  style={[
+                    styles.loginOptionText,
+                    {
+                      color: "#007DC1",
+                      textDecorationLine: "underline",
+                      fontWeight: "500",
+                    },
+                  ]}
+                >
+                  login ?
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </ScreenWrapper>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </View>
+
+        {/* Login Form */}
+        <View style={styles.formContainer}>
+          <Text style={styles.loginText}>
+            Login to your FloorWalk Client Portal
+          </Text>
+
+          {/* Email Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Email Id"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+
+          {/* Password Input */}
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Ionicons
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={moderateScale(24)}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Forgot Password */}
+
+          <Link href={"/PasswordRecovery"} asChild>
+            <TouchableOpacity style={styles.forgotPassword}>
+              <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
+            </TouchableOpacity>
+          </Link>
+
+          {/* Login Button */}
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>Log In</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            padding: scale(14),
+            flexDirection: "row",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: scale(14),
+              fontWeight: "400",
+            }}
+          >
+            Don't have account{" "}
+          </Text>
+          <Link href={"/Signup"}>
+            <Text
+              style={{
+                fontSize: scale(16),
+                fontWeight: "700",
+                color: theme.colors.primary,
+              }}
+            >
+              Sign Up
+            </Text>
+          </Link>
+        </View>
+        {/* How It Works Section */}
+        <View style={styles.howItWorks}>
+          <Text style={styles.howItWorksTitle}>How It Works</Text>
+          <Text style={styles.howItWorksText}>
+            Watch this 90 seconds video to know how can FloorWalk help you
+            improve your business
+          </Text>
+        </View>
+        <VideoView
+          style={styles.video}
+          player={player}
+          allowsFullscreen
+          allowsPictureInPicture
+        />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: wp(4),
     flex: 1,
+    backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: theme.colors.primary_100,
+  content: {
+    padding: moderateScale(20),
+  },
+  logo: {
+    width: scale(140),
+    height: verticalScale(60),
+    marginTop: verticalScale(10),
+  },
+  welcomeTitle: {
+    fontSize: moderateScale(30),
+    color: "#003C5D",
     textAlign: "center",
-    marginBottom: 8,
+    fontWeight: "700",
   },
-  subtitle: {
-    fontSize: 16,
-    color: theme.colors.neutral_600,
+  portalTitle: {
+    fontSize: moderateScale(35),
     textAlign: "center",
-    marginBottom: 32,
-    fontWeight: "400",
+    fontWeight: "700",
   },
-  inputContainer: {
-    marginBottom: 20,
+  floorWalk: {
+    color: "#8DC63F",
   },
-  label: {
-    fontSize: 16,
-    color: theme.colors.neutral_600,
-    marginBottom: 8,
+  loginOptions: {
+    width: "100%",
+    marginBottom: verticalScale(20),
+    paddingTop: verticalScale(10),
+    gap: scale(2),
   },
-  input: {
-    borderWidth: 1,
-    borderColor: theme.colors.neutral_400,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    fontSize: 16,
-    borderRadius: 8,
-  },
-  passwordContainer: {
+  loginOption: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 4,
+  },
+  loginOptionText: {
+    fontSize: moderateScale(14),
+    color: "#666",
+  },
+  formContainer: {
+    width: "100%",
+    backgroundColor: "#fff",
+    padding: moderateScale(20),
+    borderRadius: moderateScale(10),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  loginText: {
+    fontSize: moderateScale(16),
+    marginBottom: verticalScale(20),
+    textAlign: "center",
+  },
+  input: {
+    width: "100%",
+    height: verticalScale(45),
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: moderateScale(5),
+    paddingHorizontal: moderateScale(15),
+    marginBottom: verticalScale(15),
+    fontSize: moderateScale(14),
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: moderateScale(5),
+    marginBottom: verticalScale(15),
   },
   passwordInput: {
     flex: 1,
+    height: verticalScale(45),
+    paddingHorizontal: moderateScale(15),
+    fontSize: moderateScale(14),
   },
   eyeIcon: {
-    position: "absolute",
-    right: 0,
-    padding: 8,
+    padding: moderateScale(10),
   },
   forgotPassword: {
-    color: theme.colors.secondary_700,
-    textAlign: "left",
-    marginTop: 8,
-    marginBottom: 20,
+    alignSelf: "flex-end",
+    marginBottom: verticalScale(20),
   },
-  recaptcha: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 4,
-    padding: 12,
-    marginBottom: 20,
-    backgroundColor: "#f9f9f9",
-    alignItems: "center",
-  },
-  recaptchaText: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: "#333",
-    backgroundColor: "#fff",
-    marginRight: 8,
-  },
-  recaptchaLabel: {
-    fontSize: 14,
-    color: "#333",
-  },
-  recaptchaFooter: {
-    fontSize: 12,
+  forgotPasswordText: {
     color: "#666",
-    marginTop: 8,
-    textAlign: "center",
+    fontSize: moderateScale(14),
   },
-  signupContainer: {
+  loginButton: {
+    width: "100%",
+    backgroundColor: "#0088CC",
+    padding: moderateScale(15),
+    borderRadius: moderateScale(5),
     alignItems: "center",
   },
-  signupText: {
-    color: theme.colors.primary,
-    fontSize: 16,
+  loginButtonText: {
+    color: "#fff",
+    fontSize: moderateScale(16),
+    fontWeight: "600",
   },
-  signupSubtext: {
-    color: theme.colors.primary,
+  howItWorks: {
+    marginTop: verticalScale(30),
+    alignItems: "center",
+  },
+  howItWorksTitle: {
+    fontSize: moderateScale(20),
+    color: "#003366",
+    marginBottom: verticalScale(10),
+  },
+  howItWorksText: {
+    textAlign: "center",
+    color: "#666",
+    fontSize: moderateScale(14),
+    paddingHorizontal: moderateScale(20),
+  },
+
+  video: {
+    width: "100%",
+    height: verticalScale(180),
+    marginTop: verticalScale(8),
   },
 });

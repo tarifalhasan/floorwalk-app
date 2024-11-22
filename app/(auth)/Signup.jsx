@@ -1,11 +1,8 @@
+import CustomCountryPicker from "@/components/CountryPicker";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,217 +10,277 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {} from "react-native-web";
-import Button from "../../components/Button";
-import ScreenWrapper from "../../components/ScreenWrapper";
-import { theme } from "../../constants/theme";
-import { wp } from "../../helpers/common";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 
-export default function SignUpScreen() {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [brandName, setBrandName] = useState("");
-  const [password, setPassword] = useState("");
+export default function SignupScreen() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    email: "",
+    brandName: "",
+    phoneNumber: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [countryCode, setCountryCode] = useState("IN");
+  const [country, setCountry] = useState(null);
+
+  const handleSignup = () => {
+    console.log("Signup attempted with:", formData);
+  };
+
+  const onSelect = (country) => {
+    setCountryCode(country.cca2);
+    setCountry(country);
+  };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-      >
-        <ScreenWrapper bg="#fff">
-          <StatusBar style="dark" />
-          <View style={styles.container}>
-            <Text style={styles.title}>Sign Up</Text>
-            <Text style={styles.subtitle}>
-              <Text style={{ fontWeight: "bold" }}>Create Account</Text>{" "}
-              FloorWalk Shopper Portal
-            </Text>
+    <ScrollView style={styles.container}>
+      <Image
+        style={styles.leftDecoration}
+        source={require("@/assets/images/left_login.png")}
+      />
+      <Image
+        style={styles.rightDecoration}
+        source={require("@/assets/images/right_login.png")}
+      />
+      <Image
+        source={require("@/assets/images/logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      <View style={styles.content}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.welcomeTitle}>Welcome to</Text>
+          <Text style={styles.portalTitle}>
+            <Text style={styles.floorWalk}>FloorWalk</Text>
+            {"\n"}
+            Shopper Portal
+          </Text>
+        </View>
 
-            {/* Email Id */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email Id</Text>
-              <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
+        {/* Signup Form */}
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="First Name"
+            value={formData.firstName}
+            onChangeText={(text) =>
+              setFormData({ ...formData, firstName: text })
+            }
+            autoCapitalize="words"
+          />
 
-            {/* First Name */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>First Name</Text>
-              <TextInput
-                style={styles.input}
-                value={firstName}
-                onChangeText={setFirstName}
-                placeholder="First Name"
-              />
-            </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Email Id"
+            value={formData.email}
+            onChangeText={(text) => setFormData({ ...formData, email: text })}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
 
-            {/* Brand Name */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Brand Name</Text>
-              <TextInput
-                style={styles.input}
-                value={brandName}
-                onChangeText={setBrandName}
-                placeholder="Brand Name"
-              />
-            </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Brand Name"
+            value={formData.brandName}
+            onChangeText={(text) =>
+              setFormData({ ...formData, brandName: text })
+            }
+            autoCapitalize="words"
+          />
 
-            {/* Phone Number */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Phone Number</Text>
-              <View style={styles.phoneContainer}>
-                {/* Add flag and country code picker here */}
-                <TextInput
-                  style={[styles.input, styles.phoneInput]}
-                  placeholder="+91-"
-                  keyboardType="phone-pad"
-                />
-              </View>
-            </View>
-
-            {/* Password */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.passwordContainer}>
-                <TextInput
-                  style={[styles.input, styles.passwordInput]}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                  placeholder="Password"
-                />
-                <Pressable
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.eyeIcon}
-                >
-                  <Ionicons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
-                    size={24}
-                    color={theme.colors.neutral_400}
-                  />
-                </Pressable>
-              </View>
-            </View>
-            <Link href={"/Login"} asChild>
-              <TouchableOpacity>
-                <Text style={styles.loginText}>
-                  Already have an account?{" "}
-                  <Text style={styles.loginLink}>Log In</Text>
-                </Text>
-              </TouchableOpacity>
-            </Link>
-            {/* reCAPTCHA placeholder */}
-            <View style={styles.recaptcha}>
-              <Text style={styles.recaptchaText}>
-                reCAPTCHA verification would go here
-              </Text>
-            </View>
-            <Button onPress={() => {}} title={"Create Account"} />
-            <Text style={styles.disclaimer}>
-              * By signing up, you agree to our Terms Of Use and acknowledge
-              you’ve read our Privacy Policy. This site is protected by
-              reCAPTCHA Enterprise, Google's Privacy Policy, and Terms Of
-              Service apply.
-            </Text>
+          <View style={styles.phoneContainer}>
+            <CustomCountryPicker
+              countryCode={countryCode}
+              withFilter
+              withFlag
+              withCountryNameButton={false}
+              withAlphaFilter
+              withCallingCode
+              withEmoji
+              onSelect={onSelect}
+              containerButtonStyle={styles.countryPickerButton}
+            />
+            <TextInput
+              style={styles.phoneInput}
+              placeholder="Phone Number"
+              value={formData.phoneNumber}
+              onChangeText={(text) =>
+                setFormData({ ...formData, phoneNumber: text })
+              }
+              keyboardType="phone-pad"
+            />
           </View>
-        </ScreenWrapper>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              value={formData.password}
+              onChangeText={(text) =>
+                setFormData({ ...formData, password: text })
+              }
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Ionicons
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={moderateScale(24)}
+                color="#666"
+              />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+            <Text style={styles.signupButtonText}>Create Account</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* How It Works Section */}
+        <View style={styles.howItWorks}>
+          <Text style={styles.howItWorksTitle}>How It Works</Text>
+          <Text style={styles.howItWorksText}>
+            Watch this 90 seconds video to know how can FloorWalk help you
+            improve your Consumer Experience.
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: wp(4),
+    flex: 1,
+    backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: theme.colors.primary_100,
+  leftDecoration: {
+    width: moderateScale(70),
+    height: verticalScale(150),
+    position: "absolute",
+    top: verticalScale(90),
+    left: 0,
+  },
+  rightDecoration: {
+    width: moderateScale(70),
+    height: verticalScale(150),
+    position: "absolute",
+    top: verticalScale(90),
+    right: 0,
+  },
+  content: {
+    padding: moderateScale(20),
+  },
+  logo: {
+    width: scale(140),
+    height: verticalScale(60),
+    marginTop: verticalScale(10),
+    alignSelf: "center",
+  },
+  headerContainer: {
+    paddingVertical: scale(30),
+  },
+  welcomeTitle: {
+    fontSize: moderateScale(30),
+    color: "#003C5D",
     textAlign: "center",
-    marginBottom: 8,
+    fontWeight: "700",
   },
-  subtitle: {
-    fontSize: 16,
-    color: theme.colors.neutral_600,
+  portalTitle: {
+    fontSize: moderateScale(35),
     textAlign: "center",
-    marginBottom: 32,
-    fontWeight: "400",
+    fontWeight: "700",
   },
-  inputContainer: {
-    marginBottom: 20,
+  floorWalk: {
+    color: "#8DC63F",
   },
-  label: {
-    fontSize: 16,
-    color: theme.colors.neutral_600,
-    marginBottom: 8,
+  formContainer: {
+    width: "100%",
+    backgroundColor: "#fff",
+    padding: moderateScale(20),
+    borderRadius: moderateScale(10),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   input: {
+    width: "100%",
+    height: verticalScale(45),
     borderWidth: 1,
-    borderColor: theme.colors.neutral_400,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    fontSize: 16,
-    borderRadius: 8,
+    borderColor: "#ddd",
+    borderRadius: moderateScale(5),
+    paddingHorizontal: moderateScale(15),
+    marginBottom: verticalScale(15),
+    fontSize: moderateScale(14),
   },
   phoneContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: verticalScale(15),
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: moderateScale(5),
+  },
+  countryPickerButton: {
+    paddingHorizontal: moderateScale(10),
   },
   phoneInput: {
     flex: 1,
+    height: verticalScale(45),
+    paddingHorizontal: moderateScale(15),
+    fontSize: moderateScale(14),
   },
   passwordContainer: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: moderateScale(5),
+    marginBottom: verticalScale(15),
   },
   passwordInput: {
     flex: 1,
+    height: verticalScale(45),
+    paddingHorizontal: moderateScale(15),
+    fontSize: moderateScale(14),
   },
   eyeIcon: {
-    position: "absolute",
-    right: 0,
-    padding: 8,
+    padding: moderateScale(10),
   },
-  loginText: {
-    color: theme.colors.primary,
+  signupButton: {
+    width: "100%",
+    backgroundColor: "#0088CC",
+    padding: moderateScale(15),
+    borderRadius: moderateScale(5),
+    alignItems: "center",
+  },
+  signupButtonText: {
+    color: "#fff",
+    fontSize: moderateScale(16),
+    fontWeight: "600",
+  },
+  howItWorks: {
+    marginTop: verticalScale(30),
+    alignItems: "center",
+  },
+  howItWorksTitle: {
+    fontSize: moderateScale(20),
+    color: "#003366",
+    marginBottom: verticalScale(10),
+  },
+  howItWorksText: {
     textAlign: "center",
-    marginBottom: 20,
-    fontSize: 17,
-  },
-  loginLink: {
-    color: theme.colors.primary_100,
-  },
-  recaptcha: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    padding: 12,
-    marginBottom: 20,
-  },
-  recaptchaText: {
     color: "#666",
-    textAlign: "center",
-  },
-  disclaimer: {
-    fontSize: 12,
-    color: theme.colors.neutral_400,
-    textAlign: "center",
-    paddingHorizontal: wp(2),
-    paddingBottom: 14,
+    fontSize: moderateScale(14),
+    paddingHorizontal: moderateScale(20),
   },
 });
