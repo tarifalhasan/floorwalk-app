@@ -54,10 +54,6 @@ export default function RootLayout() {
           <StatusBar style="dark" />
           <Stack>
             <Stack.Screen
-              name="(drawer)/(tabs)"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name="AuditorCertificationTest"
               options={{ headerShown: false }}
             />

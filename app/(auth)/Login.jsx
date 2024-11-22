@@ -1,9 +1,8 @@
 import { theme } from "@/constants/theme";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { useEvent } from "expo";
 import { Link, router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 
 import {
   Image,
@@ -29,24 +28,12 @@ export default function LoginScreen() {
     router.push("/home");
   };
 
-  const $recaptcha = useRef(null);
-  const size = "invisible";
-  const [token, setToken] = useState("<none>");
-  const handleOpenPress = useCallback(() => {
-    $recaptcha.current?.open();
-  }, []);
-
-  const handleClosePress = useCallback(() => {
-    $recaptcha.current?.close();
-  }, []);
+  const [country, setCountry] = useState("");
+  const [region, setRegion] = useState("");
 
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
     player.pause();
-  });
-
-  const { isPlaying } = useEvent(player, "playingChange", {
-    isPlaying: player.playing,
   });
 
   return (
@@ -179,6 +166,7 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </Link>
           </View>
+
           {/* <Recaptcha
             ref={$recaptcha}
             lang="pt"

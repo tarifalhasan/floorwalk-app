@@ -8,7 +8,6 @@ import {
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { DrawerActions } from "@react-navigation/native";
 import { router, useNavigation, usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useEffect } from "react";
@@ -25,9 +24,6 @@ const CustomDrawerContent = (props) => {
 
   useEffect(() => {}, [pathname]);
 
-  const closeDrawer = () => {
-    navigation.dispatch(DrawerActions.closeDrawer());
-  };
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -108,7 +104,7 @@ const CustomDrawerContent = (props) => {
           label={"Certificate"}
           labelStyle={[
             styles.navItemLabel,
-            { color: pathname == "/feed" ? "#007DC1" : "##9CA3AF" },
+            { color: pathname == "/certificate" ? "#007DC1" : "##9CA3AF" },
           ]}
           onPress={() => {
             router.push("/certificate");
@@ -122,13 +118,13 @@ const CustomDrawerContent = (props) => {
               color={pathname == "/profile" ? "#007DC1" : "#9CA3AF"}
             />
           )}
-          label={"Profile"}
+          label="Profile"
           labelStyle={[
             styles.navItemLabel,
-            { color: pathname == "/feed" ? "#007DC1" : "##9CA3AF" },
+            { color: pathname == "/profile" ? "#007DC1" : "##9CA3AF" },
           ]}
           onPress={() => {
-            router.push("/profile");
+            router.push("/(drawer)/(tabs)/profile");
           }}
         />
         <DrawerItem
@@ -212,7 +208,9 @@ export default function Layout() {
     <Drawer
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{ headerShown: false }}
-    ></Drawer>
+    >
+      <Drawer.Screen name="certificate/index" options={{ headerShown: true }} />
+    </Drawer>
   );
 }
 

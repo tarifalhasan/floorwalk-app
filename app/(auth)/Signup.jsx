@@ -1,16 +1,19 @@
-import CustomCountryPicker from "@/components/CountryPicker";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
+  FlatList,
   Image,
-  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import CountryCodeDropdownPicker from "react-native-dropdown-country-picker";
 import { moderateScale, scale, verticalScale } from "react-native-size-matters";
 
 export default function SignupScreen() {
@@ -22,45 +25,20 @@ export default function SignupScreen() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [countryCode, setCountryCode] = useState("IN");
-  const [country, setCountry] = useState(null);
+  const [selected, setSelected] = useState("+91");
+  const [country, setCountry] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const flatListRef = useRef(null);
 
   const handleSignup = () => {
     console.log("Signup attempted with:", formData);
   };
 
-  const onSelect = (country) => {
-    setCountryCode(country.cca2);
-    setCountry(country);
-  };
-
-  return (
-    <ScrollView style={styles.container}>
-      <Image
-        style={styles.leftDecoration}
-        source={require("@/assets/images/left_login.png")}
-      />
-      <Image
-        style={styles.rightDecoration}
-        source={require("@/assets/images/right_login.png")}
-      />
-      <Image
-        source={require("@/assets/images/logo.png")}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <View style={styles.content}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.welcomeTitle}>Welcome to</Text>
-          <Text style={styles.portalTitle}>
-            <Text style={styles.floorWalk}>FloorWalk</Text>
-            {"\n"}
-            Shopper Portal
-          </Text>
-        </View>
-
-        {/* Signup Form */}
-        <View style={styles.formContainer}>
+  const renderFormItem = ({ item, index }) => {
+    switch (item.key) {
+      case "firstName":
+        return (
           <TextInput
             style={styles.input}
             placeholder="First Name"
@@ -69,8 +47,13 @@ export default function SignupScreen() {
               setFormData({ ...formData, firstName: text })
             }
             autoCapitalize="words"
+            onFocus={() =>
+              flatListRef.current?.scrollToIndex({ index, animated: true })
+            }
           />
-
+        );
+      case "email":
+        return (
           <TextInput
             style={styles.input}
             placeholder="Email Id"
@@ -78,8 +61,13 @@ export default function SignupScreen() {
             onChangeText={(text) => setFormData({ ...formData, email: text })}
             keyboardType="email-address"
             autoCapitalize="none"
+            onFocus={() =>
+              flatListRef.current?.scrollToIndex({ index, animated: true })
+            }
           />
-
+        );
+      case "brandName":
+        return (
           <TextInput
             style={styles.input}
             placeholder="Brand Name"
@@ -88,31 +76,48 @@ export default function SignupScreen() {
               setFormData({ ...formData, brandName: text })
             }
             autoCapitalize="words"
+            onFocus={() =>
+              flatListRef.current?.scrollToIndex({ index, animated: true })
+            }
           />
-
+        );
+      case "phone":
+        return (
           <View style={styles.phoneContainer}>
-            <CustomCountryPicker
-              countryCode={countryCode}
-              withFilter
-              withFlag
-              withCountryNameButton={false}
-              withAlphaFilter
-              withCallingCode
-              withEmoji
-              onSelect={onSelect}
-              containerButtonStyle={styles.countryPickerButton}
-            />
-            <TextInput
-              style={styles.phoneInput}
-              placeholder="Phone Number"
-              value={formData.phoneNumber}
-              onChangeText={(text) =>
-                setFormData({ ...formData, phoneNumber: text })
-              }
-              keyboardType="phone-pad"
+            <CountryCodeDropdownPicker
+              selected={selected}
+              setSelected={setSelected}
+              setCountryDetails={setCountry}
+              phone={phone}
+              setPhone={setPhone}
+              countryCodeTextStyles={{
+                fontSize: moderateScale(14),
+                borderWidth: 0,
+              }}
+              countryCodeContainerStyles={{
+                borderWidth: 0,
+                borderRightWidth: 2,
+                borderRadius: 0,
+              }}
+              phoneStyles={{
+                borderWidth: 0,
+              }}
+              searchStyles={{
+                backgroundColor: "#fff",
+                height: scale(45),
+                zIndex: 20,
+              }}
+              dropdownStyles={{
+                backgroundColor: "#fff",
+                opacity: 1,
+                zIndex: 2000,
+                position: "relative",
+              }}
             />
           </View>
-
+        );
+      case "password":
+        return (
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.passwordInput}
@@ -122,6 +127,9 @@ export default function SignupScreen() {
                 setFormData({ ...formData, password: text })
               }
               secureTextEntry={!showPassword}
+              onFocus={() =>
+                flatListRef.current?.scrollToIndex({ index, animated: true })
+              }
             />
             <TouchableOpacity
               style={styles.eyeIcon}
@@ -134,58 +142,100 @@ export default function SignupScreen() {
               />
             </TouchableOpacity>
           </View>
+        );
+      default:
+        return null;
+    }
+  };
 
-          <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-            <Text style={styles.signupButtonText}>Create Account</Text>
-          </TouchableOpacity>
-        </View>
+  const formItems = [
+    { key: "firstName" },
+    { key: "email" },
+    { key: "brandName" },
+    { key: "phone" },
+    { key: "password" },
+  ];
 
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            padding: scale(14),
-            flexDirection: "row",
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <Image
+          style={styles.leftDecoration}
+          source={require("@/assets/images/left_login.png")}
+        />
+        <Image
+          style={styles.rightDecoration}
+          source={require("@/assets/images/right_login.png")}
+        />
+        <Image
+          source={require("@/assets/images/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <FlatList
+          ref={flatListRef}
+          data={[{ key: "header" }, ...formItems, { key: "footer" }]}
+          renderItem={({ item, index }) => {
+            if (item.key === "header") {
+              return (
+                <View style={styles.headerContainer}>
+                  <Text style={styles.welcomeTitle}>Welcome to</Text>
+                  <Text style={styles.portalTitle}>
+                    <Text style={styles.floorWalk}>FloorWalk</Text>
+                    {"\n"}
+                    Shopper Portal
+                  </Text>
+                </View>
+              );
+            } else if (item.key === "footer") {
+              return (
+                <>
+                  <TouchableOpacity
+                    style={styles.signupButton}
+                    onPress={handleSignup}
+                  >
+                    <Text style={styles.signupButtonText}>Create Account</Text>
+                  </TouchableOpacity>
+                  <View style={styles.loginLinkContainer}>
+                    <Text style={styles.loginLinkText}>
+                      Already have an account{" "}
+                    </Text>
+                    <Link href={"/Login"}>
+                      <Text style={styles.loginLink}>Login</Text>
+                    </Link>
+                  </View>
+                  <View style={styles.howItWorks}>
+                    <Text style={styles.howItWorksTitle}>How It Works</Text>
+                    <Text style={styles.howItWorksText}>
+                      Watch this 90 seconds video to know how can FloorWalk help
+                      you improve your Consumer Experience.
+                    </Text>
+                  </View>
+                </>
+              );
+            } else {
+              return renderFormItem({ item, index: index - 1 });
+            }
           }}
-        >
-          <Text
-            style={{
-              fontSize: scale(14),
-              fontWeight: "400",
-            }}
-          >
-            Already have an account{" "}
-          </Text>
-          <Link href={"/Login"}>
-            <Text
-              style={{
-                fontSize: scale(16),
-                fontWeight: "700",
-                color: theme.colors.primary,
-              }}
-            >
-              Login
-            </Text>
-          </Link>
-        </View>
-
-        {/* How It Works Section */}
-        <View style={styles.howItWorks}>
-          <Text style={styles.howItWorksTitle}>How It Works</Text>
-          <Text style={styles.howItWorksText}>
-            Watch this 90 seconds video to know how can FloorWalk help you
-            improve your Consumer Experience.
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
+          keyExtractor={(item, index) => item.key + index}
+          contentContainerStyle={styles.content}
+        />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  container: {
+    flex: 1,
   },
   leftDecoration: {
     width: moderateScale(70),
@@ -207,11 +257,11 @@ const styles = StyleSheet.create({
   logo: {
     width: scale(140),
     height: verticalScale(60),
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(30),
     alignSelf: "center",
   },
   headerContainer: {
-    paddingVertical: scale(30),
+    paddingVertical: verticalScale(30),
   },
   welcomeTitle: {
     fontSize: moderateScale(30),
@@ -226,20 +276,6 @@ const styles = StyleSheet.create({
   },
   floorWalk: {
     color: "#8DC63F",
-  },
-  formContainer: {
-    width: "100%",
-    backgroundColor: "#fff",
-    padding: moderateScale(20),
-    borderRadius: moderateScale(10),
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   input: {
     width: "100%",
@@ -258,9 +294,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: moderateScale(5),
-  },
-  countryPickerButton: {
-    paddingHorizontal: moderateScale(10),
+    height: verticalScale(45),
   },
   phoneInput: {
     flex: 1,
@@ -282,6 +316,7 @@ const styles = StyleSheet.create({
     height: verticalScale(45),
     paddingHorizontal: moderateScale(15),
     fontSize: moderateScale(14),
+    zIndex: -2,
   },
   eyeIcon: {
     padding: moderateScale(10),
@@ -292,11 +327,27 @@ const styles = StyleSheet.create({
     padding: moderateScale(15),
     borderRadius: moderateScale(5),
     alignItems: "center",
+    marginTop: verticalScale(15),
   },
   signupButtonText: {
     color: "#fff",
     fontSize: moderateScale(16),
     fontWeight: "600",
+  },
+  loginLinkContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: scale(14),
+    flexDirection: "row",
+  },
+  loginLinkText: {
+    fontSize: scale(14),
+    fontWeight: "400",
+  },
+  loginLink: {
+    fontSize: scale(16),
+    fontWeight: "700",
+    color: "#0088CC",
   },
   howItWorks: {
     marginTop: verticalScale(30),

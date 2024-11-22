@@ -1,6 +1,7 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { theme } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import Checkbox from "expo-checkbox";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
@@ -42,9 +43,7 @@ export default function CertificationTest() {
           <Ionicons name="chevron-back" size={scale(24)} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Certificate</Text>
-        <TouchableOpacity style={styles.menuButton}>
-          <Ionicons name="menu" size={scale(24)} color="#000" />
-        </TouchableOpacity>
+        <DrawerToggleButton tintColor="#9CA3AF" />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
