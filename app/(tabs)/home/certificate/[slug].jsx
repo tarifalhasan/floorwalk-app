@@ -1,12 +1,16 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
-import { Stack } from "expo-router";
+import { theme } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import Checkbox from "expo-checkbox";
+import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text } from "react-native";
-import { scale, verticalScale } from "react-native-size-matters";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScaledSheet, scale } from "react-native-size-matters";
 
-export default function GetCertificate() {
-  const [instructionsRead, setInstructionsRead] = useState(false);
+export default function CertificationTest() {
+  const [isChecked, setIsChecked] = useState(false);
 
+  const navigation = useRouter();
   const skills = [
     "Comprehension Skill",
     "Visual Observation Skill",
@@ -25,112 +29,175 @@ export default function GetCertificate() {
 
   return (
     <ScreenWrapper bg="#fff">
-      <Stack.Screen options={{ headerShown: false }} />
-      <Text>Hello</Text>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={() => navigation.back()}
+          style={styles.backButton}
+        >
+          <Ionicons name="chevron-back" size={scale(24)} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Certificate</Text>
+        <TouchableOpacity style={styles.menuButton}>
+          <Ionicons name="menu" size={scale(24)} color="#000" />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Auditor Certification Test</Text>
+
+        <Text style={styles.description}>
+          This certification will help us understand you better. By completing
+          this certificate, you will increase your chances for getting mystery
+          audits. The higher the score, better are the chances of getting
+          mystery audits.
+        </Text>
+
+        <Text style={styles.subheading}>
+          The Auditor Certification test will be conducted to check
+        </Text>
+
+        {skills.map((skill, index) => (
+          <View key={skill} style={styles.skillItem}>
+            <Text style={styles.skillText}>{`${index + 1}. ${skill}`}</Text>
+          </View>
+        ))}
+
+        <Text style={styles.subheading}>Test instructions</Text>
+
+        {instructions.map((instruction) => (
+          <View key={instruction} style={styles.instructionItem}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.instructionText}>{instruction}</Text>
+          </View>
+        ))}
+
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            value={isChecked}
+            onValueChange={setIsChecked}
+            color={isChecked ? theme.colors.primary : undefined}
+            style={styles.checkbox}
+          />
+          <Text style={styles.checkboxLabel}>
+            I have read & understood the instructions
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.button, !isChecked && styles.buttonDisabled]}
+          disabled={!isChecked}
+        >
+          <Text style={styles.buttonText}>Start Test Now</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </ScreenWrapper>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: "14@s",
+    paddingVertical: "12@vs",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5E5",
+  },
+  backButton: {
+    padding: "4@s",
+  },
+  menuButton: {
+    padding: "2@s",
+  },
+  headerTitle: {
+    fontSize: "16@s",
+    fontWeight: "600",
+    color: "#000",
   },
   content: {
     flex: 1,
-    paddingHorizontal: scale(16),
+    padding: "16@s",
+    paddingHorizontal: "24@s",
   },
   title: {
-    fontSize: verticalScale(18),
-    fontWeight: "700",
-    color: "#003C5D",
-    marginBottom: verticalScale(16),
-    textAlign: "center",
+    fontSize: "20@s",
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: "12@vs",
   },
   description: {
-    fontSize: verticalScale(14),
-    color: "#4B5563",
-    marginBottom: verticalScale(16),
+    fontSize: "14@s",
+    color: "#666",
+    lineHeight: "20@vs",
+    marginBottom: "20@vs",
   },
-  subtitle: {
-    fontSize: verticalScale(18),
-    fontWeight: "700",
-    color: "#003C5D",
-    marginBottom: verticalScale(16),
-  },
-  skillContainer: {
-    padding: scale(8),
-    backgroundColor: "rgba(215, 241, 255, 0.25)",
+  subheading: {
+    fontSize: "16@s",
+    fontWeight: "600",
+    color: "#000",
+    marginTop: "16@vs",
+    marginBottom: "12@vs",
   },
   skillItem: {
-    marginBottom: verticalScale(8),
+    marginBottom: "8@vs",
   },
   skillText: {
-    fontSize: scale(12),
-    color: "#003C5D",
-  },
-  instructionsTitle: {
-    fontSize: scale(14),
-    fontWeight: "400",
-    color: "#003C5D",
-    marginTop: verticalScale(16),
-    marginBottom: verticalScale(16),
-  },
-  instructionContainer: {
-    padding: scale(8),
-    backgroundColor: "rgba(215, 241, 255, 0.25)",
+    fontSize: "14@s",
+    color: "#000",
+    lineHeight: "20@vs",
   },
   instructionItem: {
     flexDirection: "row",
-    marginBottom: verticalScale(8),
+    marginBottom: "8@vs",
+    paddingRight: "16@s",
   },
   bulletPoint: {
-    fontSize: scale(12),
+    fontSize: "14@s",
     color: "#666",
-    marginRight: scale(8),
+    marginRight: "8@s",
   },
   instructionText: {
-    fontSize: scale(12),
-    color: "#666",
     flex: 1,
-  },
-  footer: {
-    paddingHorizontal: scale(16),
+    fontSize: "14@s",
+    color: "#666",
+    lineHeight: "20@vs",
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: verticalScale(16),
-    marginBottom: verticalScale(16),
+    marginTop: "20@vs",
+    marginBottom: "24@vs",
   },
   checkbox: {
-    width: scale(20),
-    height: scale(20),
-    borderWidth: 1,
-    borderColor: "#007AFF",
-    marginRight: scale(8),
-    justifyContent: "center",
+    marginRight: "8@s",
+  },
+  checkboxLabel: {
+    fontSize: "14@s",
+    color: "#000",
+  },
+  button: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: "4@s",
+    paddingVertical: "12@vs",
     alignItems: "center",
+    marginBottom: "32@vs",
   },
-  checkboxText: {
-    fontSize: scale(12),
-    color: "#003C5D",
+  buttonDisabled: {
+    opacity: 0.6,
   },
-  startButton: {
-    backgroundColor: "#007DC1",
-    borderRadius: scale(8),
-    paddingVertical: verticalScale(12),
-    marginBottom: verticalScale(16),
-  },
-  startButtonDisabled: {
-    backgroundColor: "#E5E5E5",
-  },
-  startButtonText: {
+  buttonText: {
     color: "#fff",
-    textAlign: "center",
-    fontSize: scale(14),
-    fontWeight: "600",
-  },
-  startButtonTextDisabled: {
-    color: "#999",
+    fontSize: "14@s",
+    fontWeight: "400",
   },
 });
