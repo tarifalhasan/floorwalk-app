@@ -11,6 +11,7 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useRef, useState } from "react";
@@ -90,9 +91,7 @@ export default function AuditReportScreen() {
         </Pressable>
         <Text style={styles.headerTitle}>View Report</Text>
         <View style={styles.headerRight}>
-          <Pressable style={styles.menuButton}>
-            <Ionicons name="menu" size={27} color="#9CA3AF" />
-          </Pressable>
+          <DrawerToggleButton tintColor="#9CA3AF" />
         </View>
       </View>
       {/* Title Section */}

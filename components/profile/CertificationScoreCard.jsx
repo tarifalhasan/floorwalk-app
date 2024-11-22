@@ -1,19 +1,40 @@
 import { theme } from "@/constants/theme";
-import { hp, wp } from "@/helpers/common";
-import { Image, StyleSheet, Text, View } from "react-native";
-
+import { wp } from "@/helpers/common";
+import { StyleSheet, Text, View } from "react-native";
+import { scale } from "react-native-size-matters";
+import Svg, { Circle, G, Mask, Path } from "react-native-svg";
 const CertificationScoreCard = ({ score = 93, maxScore = 100 }) => {
   const progressPercentage = (score / maxScore) * 100; // Calculate the percentage
 
   return (
     <View style={styles.card}>
-      <Image
-        style={{
-          width: hp(6),
-          height: hp(6),
-        }}
-        source={require("@/assets/icons/docs.png")}
-      />
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={scale(40)}
+        height={scale(40)}
+        fill="none"
+      >
+        <Circle cx={13.08} cy={12.299} r={12.29} fill="#ECF6DF" />
+        <Mask
+          id="a"
+          width={21}
+          height={21}
+          x={12}
+          y={9}
+          maskUnits="userSpaceOnUse"
+          style={{
+            maskType: "alpha",
+          }}
+        >
+          <Path fill="#D9D9D9" d="M12.755 9.841h19.664v19.664H12.755z" />
+        </Mask>
+        <G mask="url(#a)">
+          <Path
+            fill="#8DC63F"
+            d="M16.852 27.047c-.451 0-.837-.16-1.158-.482a1.578 1.578 0 0 1-.481-1.157v-11.47c0-.451.16-.837.481-1.158.321-.32.707-.481 1.158-.481h11.47c.45 0 .837.16 1.157.481.321.321.482.707.482 1.158v11.47c0 .45-.16.836-.482 1.157-.32.321-.706.482-1.157.482h-11.47Zm0-13.11v11.471h11.47v-11.47h-1.639v5.735l-2.048-1.23-2.048 1.23v-5.735h-5.735Z"
+          />
+        </G>
+      </Svg>
       <Text style={styles.title}>Certification Score</Text>
       <Text style={styles.scoreText}>{`${score}/${maxScore}`}</Text>
       <View style={styles.progressContainer}>
@@ -45,13 +66,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: hp(2),
+    fontSize: scale(15),
     color: theme.colors.primary_100,
-    fontWeight: "600",
-    paddingVertical: hp(1.2),
+    fontWeight: "700",
   },
   scoreText: {
-    fontSize: hp(1.4),
+    fontSize: scale(15),
     color: "#A3C14A",
     fontWeight: "bold",
     marginBottom: 8,

@@ -1,8 +1,9 @@
 import { theme } from "@/constants/theme";
-import { hp, wp } from "@/helpers/common";
+import { hp } from "@/helpers/common";
 import { FontAwesome } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, Text, View } from "react-native";
+import { scale } from "react-native-size-matters";
+import Svg, { Circle, G, Mask, Path } from "react-native-svg";
 const AuditRating = ({ rating = 4.5 }) => {
   const maxRating = 5; // Max number of stars
 
@@ -24,13 +25,33 @@ const AuditRating = ({ rating = 4.5 }) => {
 
   return (
     <View style={styles.card}>
-      <Image
-        style={{
-          width: hp(6),
-          height: hp(6),
-        }}
-        source={require("@/assets/icons/stars.png")}
-      />
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={scale(30)}
+        height={scale(30)}
+        fill="none"
+      >
+        <Circle cx={13.08} cy={13.242} r={12.29} fill="#FFFAD2" />
+        <Mask
+          id="a"
+          width={21}
+          height={21}
+          x={12}
+          y={10}
+          maskUnits="userSpaceOnUse"
+          style={{
+            maskType: "alpha",
+          }}
+        >
+          <Path fill="#D9D9D9" d="M12.755 10.784h19.664v19.664H12.755z" />
+        </Mask>
+        <G mask="url(#a)">
+          <Path
+            fill="#FCE301"
+            d="M22.587 17.257v4.834l1.966 1.516-.737-2.5 1.843-1.31h-2.294l-.778-2.54Zm-5.06 10.733 1.905-6.227-5.038-3.605h6.226l1.967-6.555 1.966 6.555h6.227l-5.039 3.605 1.905 6.227-5.06-3.85-5.058 3.85Z"
+          />
+        </G>
+      </Svg>
       <Text style={styles.title}>Audit Rating</Text>
       <View>
         <Text style={styles.ratting_text}>
@@ -51,20 +72,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FAFAFA",
     borderRadius: 12,
-    padding: wp(2),
+    padding: scale(10),
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
   title: {
-    fontSize: hp(2),
+    fontSize: scale(15),
     color: theme.colors.primary_100,
-    fontWeight: "600",
+    fontWeight: "700",
     paddingVertical: hp(1.2),
   },
   ratting_text: {
-    fontSize: hp(1.4),
+    fontSize: scale(15),
     color: "#FCE301",
     fontWeight: "bold",
     marginBottom: 8,

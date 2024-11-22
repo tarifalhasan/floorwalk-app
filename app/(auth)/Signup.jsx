@@ -1,5 +1,6 @@
 import CustomCountryPicker from "@/components/CountryPicker";
 import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import { useState } from "react";
 import {
   Image,
@@ -137,6 +138,35 @@ export default function SignupScreen() {
           <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
             <Text style={styles.signupButtonText}>Create Account</Text>
           </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            padding: scale(14),
+            flexDirection: "row",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: scale(14),
+              fontWeight: "400",
+            }}
+          >
+            Already have an account{" "}
+          </Text>
+          <Link href={"/Login"}>
+            <Text
+              style={{
+                fontSize: scale(16),
+                fontWeight: "700",
+                color: theme.colors.primary,
+              }}
+            >
+              Login
+            </Text>
+          </Link>
         </View>
 
         {/* How It Works Section */}

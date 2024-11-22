@@ -3,7 +3,8 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { useEvent } from "expo";
 import { Link, router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+
 import {
   Image,
   ScrollView,
@@ -27,6 +28,17 @@ export default function LoginScreen() {
     console.log("Login attempted with:", email, password);
     router.push("/home");
   };
+
+  const $recaptcha = useRef(null);
+  const size = "invisible";
+  const [token, setToken] = useState("<none>");
+  const handleOpenPress = useCallback(() => {
+    $recaptcha.current?.open();
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    $recaptcha.current?.close();
+  }, []);
 
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
@@ -61,7 +73,7 @@ export default function LoginScreen() {
       />
       <Image
         source={require("@/assets/images/logo.png")}
-        style={[styles.logo, {}]}
+        style={[styles.logo, { marginTop: verticalScale(30) }]}
         resizeMode="contain"
       />
       <View style={styles.content}>
@@ -160,11 +172,34 @@ export default function LoginScreen() {
 
           {/* Forgot Password */}
 
-          <Link href={"/PasswordRecovery"} asChild>
-            <TouchableOpacity style={styles.forgotPassword}>
-              <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
-            </TouchableOpacity>
-          </Link>
+          <View>
+            <Link href={"/PasswordRecovery"} asChild>
+              <TouchableOpacity style={styles.forgotPassword}>
+                <Text style={styles.forgotPasswordText}>Forgot Password ?</Text>
+              </TouchableOpacity>
+            </Link>
+          </View>
+          {/* <Recaptcha
+            ref={$recaptcha}
+            lang="pt"
+            siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+            baseUrl="http://127.0.0.1"
+            size={size}
+            theme="dark"
+            onLoad={() => Alert.alert("onLoad event")}
+            onClose={() => Alert.alert("onClose event")}
+            onError={(err) => {
+              Alert.alert("onError event");
+              console.warn(err);
+            }}
+            onExpire={() => Alert.alert("onExpire event")}
+            onVerify={(token) => {
+              Alert.alert("onVerify event");
+              setToken(token);
+            }}
+            enterprise={false}
+            hideBadge={false}
+          /> */}
 
           {/* Login Button */}
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>

@@ -2,6 +2,7 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
@@ -37,14 +38,7 @@ export default function Component() {
       <StatusBar style="dark" />
       <Stack.Screen
         options={{
-          headerRight: () => (
-            <Ionicons
-              name="menu"
-              size={24}
-              color="black"
-              style={{ marginLeft: 10 }}
-            />
-          ),
+          headerRight: () => <DrawerToggleButton tintColor="#9CA3AF" />,
           headerTitleAlign: "center",
           title: "Nagpur ECO - ELITE, Nagpur",
           headerTitleStyle: { fontSize: hp(2) },

@@ -1,13 +1,14 @@
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerToggleButton } from "@react-navigation/drawer";
 import { StyleSheet, Text, View } from "react-native";
 
 const ProfileHeader = ({ onBack, onMenu }) => (
   <View style={styles.header}>
     <Ionicons name="chevron-back" size={24} color="#003366" onPress={onBack} />
     <Text style={styles.headerTitle}>Profile</Text>
-    <Ionicons name="menu" size={24} color="#003366" onPress={onMenu} />
+    <DrawerToggleButton tintColor="#9CA3AF" />
   </View>
 );
 

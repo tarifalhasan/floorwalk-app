@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const ProfileTabs = ({ activeTab, onTabChange }) => (
   <View style={styles.tabs}>
@@ -34,11 +35,11 @@ const ProfileTabs = ({ activeTab, onTabChange }) => (
 const styles = StyleSheet.create({
   tabs: {
     flexDirection: "row",
-    marginBottom: 16,
+    marginBottom: verticalScale(20),
   },
   tab: {
     flex: 1,
-    paddingVertical: 8,
+    paddingVertical: verticalScale(8),
     alignItems: "center",
   },
   activeTab: {
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: "#666",
+    fontSize: scale(14),
   },
   activeTabText: {
     color: "#0077be",
