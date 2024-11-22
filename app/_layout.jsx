@@ -10,6 +10,7 @@ import {
   Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import Container from "toastify-react-native";
 
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -50,6 +51,7 @@ export default function RootLayout() {
     <MenuProvider>
       <GestureHandlerRootView>
         <BottomSheetModalProvider>
+          <Container position="top" />
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen

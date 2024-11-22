@@ -3,12 +3,28 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import TabItem from "@/components/ui/TabItem";
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
+import Container, { Toast } from "toastify-react-native";
+
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-
+import { useCallback, useRef, useState } from "react";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+import Svg, { G, Mask, Path } from "react-native-svg";
 export default function AuditReportScreen() {
   const router = useRouter();
   const [sections, setSections] = useState({
@@ -25,7 +41,44 @@ export default function AuditReportScreen() {
   };
 
   const [tab, setTab] = useState(1);
+  const [auditReportOpen, setAuditReportOpen] = useState(false);
+  const bottomSheetModalRef = useRef(null);
+  const performedTheAuditBottomSheetModalRef = useRef(null);
+  const performedTheAuditPresentModalPress = useCallback(() => {
+    performedTheAuditBottomSheetModalRef.current?.present();
+  }, []);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
 
+  const onHavingTrouble = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+    setAuditReportOpen(true);
+  });
+
+  const onHavingTroubleAgree = () => {
+    setAuditReportOpen(false);
+    Toast.success("Report Submit Successfully");
+  };
+
+  const performedTheAuditReportSubmit = async () => {
+    performedTheAuditBottomSheetModalRef.current?.close();
+    Toast.success("Audit Report Submited");
+  };
+  const performedTheAuditReportCancel = async () => {
+    performedTheAuditBottomSheetModalRef.current?.close();
+    Toast.warn("Audit Report Cancel");
+  };
   return (
     <ScreenWrapper bg="#fff">
       <Stack.Screen options={{ headerShown: false }} />
@@ -45,7 +98,7 @@ export default function AuditReportScreen() {
       {/* Title Section */}
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Nagpur ECO - ELITE, Nagpur</Text>
-        <Pressable style={styles.shareButton}>
+        <Pressable onPress={handlePresentModalPress} style={styles.shareButton}>
           <Ionicons name="share-outline" size={24} color="#007DC1" />
         </Pressable>
       </View>
@@ -234,6 +287,281 @@ export default function AuditReportScreen() {
         )}
         {tab === 2 && <SurveyDetailsScreen />}
       </ScrollView>
+
+      <Container
+        textStyle={{
+          fontSize: scale(13),
+        }}
+        duration={5000}
+        position="top"
+      />
+      {auditReportOpen && (
+        <View
+          style={{
+            backgroundColor: "#F4F8FB",
+            paddingHorizontal: moderateScale(18),
+            paddingVertical: verticalScale(10),
+            gap: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: scale(16),
+              color: "#003C5D",
+              fontWeight: "700",
+            }}
+          >
+            Audit Report
+          </Text>
+          <Text
+            style={{
+              fontSize: scale(13),
+              color: "#9CA3AF",
+              fontWeight: "400",
+            }}
+          >
+            Click Agree if you’re ready to start the audit and have thoroughly
+            reviewed the guidelines and questionnaire.
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <TouchableOpacity
+              onPress={performedTheAuditPresentModalPress}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1.5,
+                borderColor: theme.colors.primary,
+                height: verticalScale(40),
+                borderRadius: 6,
+                paddingHorizontal: moderateScale(10),
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: scale(13),
+                  color: "#007DC1",
+                  fontWeight: "600",
+                }}
+              >
+                Performed the Audit?
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onHavingTroubleAgree}
+              style={{
+                flex: 0,
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1.5,
+                borderColor: "#8DC63F",
+                height: verticalScale(40),
+                borderRadius: 6,
+                paddingHorizontal: moderateScale(50),
+                backgroundColor: "#8DC63F",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: scale(13),
+                  color: "#fff",
+                  fontWeight: "600",
+                }}
+              >
+                Agree
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        enableDismissOnClose
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <View style={{ gap: hp(1.6) }}>
+            {/* Help Header */}
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+            >
+              <Svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={scale(24)}
+                height={scale(24)}
+                fill="none"
+              >
+                <Mask
+                  id="a"
+                  width={scale(24)}
+                  height={scale(24)}
+                  x={0}
+                  y={0}
+                  maskUnits="userSpaceOnUse"
+                  style={{
+                    maskType: "alpha",
+                  }}
+                >
+                  <Path fill="#D9D9D9" d="M0 0h24v24H0z" />
+                </Mask>
+                <G mask="url(#a)">
+                  <Path
+                    fill="#003C5D"
+                    d="M12 17c.283 0 .52-.096.713-.288A.968.968 0 0 0 13 16a.968.968 0 0 0-.287-.713A.968.968 0 0 0 12 15a.968.968 0 0 0-.713.287A.968.968 0 0 0 11 16c0 .283.096.52.287.712.192.192.43.288.713.288Zm-1-4h2V7h-2v6Zm-6 8c-.55 0-1.02-.196-1.413-.587A1.926 1.926 0 0 1 3 19V5c0-.55.196-1.02.587-1.413A1.926 1.926 0 0 1 5 3h4.2c.217-.6.58-1.083 1.088-1.45A2.857 2.857 0 0 1 12 1c.633 0 1.204.183 1.713.55.508.367.87.85 1.087 1.45H19c.55 0 1.02.196 1.413.587C20.803 3.98 21 4.45 21 5v14c0 .55-.196 1.02-.587 1.413A1.926 1.926 0 0 1 19 21H5Zm0-2h14V5H5v14Zm7-14.75a.728.728 0 0 0 .75-.75.728.728 0 0 0-.75-.75.728.728 0 0 0-.75.75.728.728 0 0 0 .75.75Z"
+                  />
+                </G>
+              </Svg>
+              <Text style={styles.headerTitle}>Help</Text>
+            </View>
+
+            <Text style={styles.helpTitle}>
+              Please check with the Project Manager for the Excel sheet of games
+              that are to be checked during the visit.
+            </Text>
+
+            <View style={styles.additionalInfo}>
+              <Text
+                style={{
+                  fontSize: scale(13),
+                  color: theme.colors.primary_100,
+                  fontWeight: "400",
+                }}
+              >
+                Before visiting the center, call on the Centralized number of
+                the SHOTT (18004199055). If the call gets unanswered within 3
+                attempts (After an interval of 2 hours) then, you can stop
+                calling. If a call back is received please answer it and attach
+                it as proof in the report.
+              </Text>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity onPress={onHavingTrouble}>
+                <Text
+                  style={{
+                    fontSize: scale(14),
+                    fontWeight: "600",
+                    color: theme.colors.primary,
+                    borderBottomWidth: 1.5,
+                    borderBottomColor: theme.colors.primary,
+                  }}
+                >
+                  Having Trouble?
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </BottomSheetView>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={performedTheAuditBottomSheetModalRef}
+        enableDismissOnClose
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <View style={{ gap: hp(1.6) }}>
+            {/* Help Header */}
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+            >
+              <Text style={styles.headerTitle}>Performed the Audit?</Text>
+            </View>
+
+            <View style={styles.additionalInfo}>
+              <Text
+                style={{
+                  fontSize: scale(13),
+                  color: theme.colors.primary_100,
+                  fontWeight: "400",
+                }}
+              >
+                If you did not perform or not going to perform the Audit please
+                give reason and click No and If you did or gong to perform,
+                please click{" "}
+                <Text
+                  style={{ fontWeight: "700", color: theme.colors.primary }}
+                >
+                  Yes
+                </Text>{" "}
+                and Fill the Report wlth ln a 48 hours.
+              </Text>
+            </View>
+            <TextInput
+              style={{
+                height: scale(100),
+                width: "100%",
+                borderBottomColor: "#9CA3AF",
+                borderBottomWidth: 1.5,
+                borderRadius: 8,
+                padding: moderateScale(4),
+                fontSize: scale(14),
+                color: "#9CA3AF",
+              }}
+              placeholderTextColor={"#9CA3AF"}
+              placeholder="Reason:(Optional)"
+              multiline
+              textAlign="top"
+              numberOfLines={4}
+            />
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+            >
+              <TouchableOpacity
+                onPress={performedTheAuditReportSubmit}
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderWidth: 1.5,
+                  borderColor: "#8DC63F",
+                  height: verticalScale(40),
+                  borderRadius: 6,
+                  paddingHorizontal: moderateScale(50),
+                  backgroundColor: "#8DC63F",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: scale(13),
+                    color: "#fff",
+                    fontWeight: "600",
+                  }}
+                >
+                  Yes
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={performedTheAuditReportCancel}
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderWidth: 1.5,
+                  borderColor: theme.colors.primary,
+                  height: verticalScale(40),
+                  borderRadius: 6,
+                  paddingHorizontal: moderateScale(50),
+                  backgroundColor: theme.colors.primary,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: scale(13),
+                    color: "#fff",
+                    fontWeight: "600",
+                  }}
+                >
+                  No
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </BottomSheetView>
+      </BottomSheetModal>
     </ScreenWrapper>
   );
 }
@@ -400,5 +728,31 @@ const styles = StyleSheet.create({
   },
   tabTextInactive: {
     color: "#666",
+  },
+  contentContainer: {
+    paddingHorizontal: hp(2.5),
+    paddingBottom: hp(2),
+    paddingTop: hp(1),
+  },
+  headerTitle: {
+    fontSize: hp(2),
+    fontWeight: "700",
+    color: theme.colors.primary_100,
+  },
+  helpTitle: {
+    fontSize: scale(16),
+    fontWeight: "600",
+    color: theme.colors.primary,
+  },
+  helpDescription: {
+    fontSize: scale(12),
+    fontWeight: "400",
+    color: theme.colors.neutral_600,
+  },
+  additionalInfo: {
+    backgroundColor: "rgba(215, 241, 255, 0.25)",
+    padding: scale(10),
+    borderRadius: 10,
+    gap: 8,
   },
 });

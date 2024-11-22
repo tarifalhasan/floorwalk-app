@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import AuditCard from "@/components/home/AuditCard";
 import CertificationCard from "@/components/home/CertificationCard";
+import HomeHelpBottomModal from "@/components/home/HomeHelpBottomModal";
 
 import WelcomeBackCard from "@/components/home/WelcomeBackCard";
 import ScreenWrapper from "@/components/ScreenWrapper";
@@ -8,6 +9,7 @@ import { textStyles, theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import { useCallback, useRef } from "react";
 import {
   FlatList,
   Image,
@@ -82,13 +84,16 @@ const certificationCardsData = [
     slug: "6",
   },
 ];
-
+const welcomeCardsData = [
+  { id: "1", title: "Welcome Back 1" },
+  { id: "2", title: "Welcome Back 2" },
+  { id: "3", title: "Welcome Back 3" },
+];
 const Home = () => {
-  const welcomeCardsData = [
-    { id: "1", title: "Welcome Back 1" },
-    { id: "2", title: "Welcome Back 2" },
-    { id: "3", title: "Welcome Back 3" },
-  ];
+  const bottomSheetModalRef = useRef(null);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
   return (
     <ScreenWrapper bg="#fff">
       <StatusBar style="dark" />
@@ -100,13 +105,15 @@ const Home = () => {
       >
         <View style={styles.headerContainer}>
           <Text style={textStyles.fontSize.title}>View Opportunities</Text>
-          <Image
-            source={require("@/assets/images/privacy_tip.png")}
-            style={{
-              width: hp(3.5),
-              height: hp(3.5),
-            }}
-          />
+          <TouchableOpacity onPress={handlePresentModalPress}>
+            <Image
+              source={require("@/assets/images/privacy_tip.png")}
+              style={{
+                width: hp(3.5),
+                height: hp(3.5),
+              }}
+            />
+          </TouchableOpacity>
         </View>
         <View>
           <View style={styles.findOpportunitiesContainer}>
@@ -170,6 +177,7 @@ const Home = () => {
           />
         </View>
       </ScrollView>
+      <HomeHelpBottomModal ref={bottomSheetModalRef} />
     </ScreenWrapper>
   );
 };

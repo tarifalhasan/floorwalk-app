@@ -1,16 +1,11 @@
-import Button from "@/components/Button";
 import FilterMenu from "@/components/FilterMenu";
 import Header from "@/components/Header";
 import PaymentCard from "@/components/payment/PaymentCard";
+import PaymentHelpModal from "@/components/payment/PaymentModal";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { theme } from "@/constants/theme";
 import { hp, wp } from "@/helpers/common";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
 import { useCallback, useRef, useState } from "react";
 import {
   FlatList,
@@ -61,43 +56,27 @@ const paymentData = [
   },
 ];
 
+const filterItems = [
+  {
+    key: "paid",
+    label: "Paid",
+  },
+  {
+    key: "pending",
+    label: "Pending",
+  },
+];
 export default function PaymentScreen() {
-  const bottomSheetModalRef = useRef(null);
-
   const [selectedFilter, setSelectedFilter] = useState("");
 
   const handleFilterSelect = (item) => {
     setSelectedFilter(item);
   };
-
-  // callbacks
+  const bottomSheetModalRef = useRef(null);
+  // callbacks for bottom modal
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index) => {
-    // console.log("handleSheetChanges", index);
-  }, []);
-  const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
-    ),
-    []
-  );
-
-  const filterItems = [
-    {
-      key: "paid",
-      label: "Paid",
-    },
-    {
-      key: "pending",
-      label: "Pending",
-    },
-  ];
 
   const RenderOverviewItem = ({ item }) => (
     <View style={[styles.overviewBox]}>
@@ -185,101 +164,8 @@ export default function PaymentScreen() {
         </View>
         {/* bottom modal */}
       </ScrollView>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        onChange={handleSheetChanges}
-        enableDismissOnClose
-        backdropComponent={renderBackdrop}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <View style={{ gap: hp(1.6) }}>
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
-            >
-              <Image
-                style={{
-                  width: hp(3.5),
-                  height: hp(3.5),
-                }}
-                source={require("@/assets/icons/privacy_tip.png")}
-              />
-              <Text
-                style={{
-                  fontSize: hp(2),
-                  fontWeight: "700",
-                  color: theme.colors.primary_100,
-                }}
-              >
-                Help
-              </Text>
-              {/*  */}
-            </View>
-            <Image
-              style={{
-                width: hp(6.5),
-                height: hp(6.5),
-              }}
-              source={require("@/assets/icons/stairs_2.png")}
-            />
-            <Text
-              style={{
-                fontSize: hp(2),
-                fontWeight: "700",
-                color: theme.colors.primary_100,
-              }}
-            >
-              Payment terms
-            </Text>
-            <Text
-              style={{
-                fontSize: hp(1.8),
-                fontWeight: "400",
-                color: theme.colors.neutral_600,
-              }}
-            >
-              Payment will be transferred into your bank account within{" "}
-              <Text style={{ fontWeight: "700" }}>
-                45 days from the month end of your report submission{" "}
-              </Text>
-              ?since all the reports are checked usually by the client on the
-              month end.
-            </Text>
-            <Text
-              style={{
-                fontSize: hp(1.8),
-                fontWeight: "400",
-                color: theme.colors.primary_100,
-              }}
-            >
-              Once the payment done from FloorWalk it might take 24-48 hours to
-              transfer amount into your bank account depending on the working
-              day and bank holidays. For any payment related queries, please
-              write us at{" "}
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                }}
-              >
-                accounts@floorwalk.in{" "}
-              </Text>
-              or you can click{" "}
-              <Text
-                style={{
-                  fontWeight: "700",
-                }}
-              >
-                Having Trouble?
-              </Text>
-            </Text>
-            <Button
-              style={{
-                marginTop: hp(2),
-              }}
-              title={"Contact Now"}
-            />
-          </View>
-        </BottomSheetView>
-      </BottomSheetModal>
+
+      <PaymentHelpModal ref={bottomSheetModalRef} />
     </ScreenWrapper>
   );
 }
