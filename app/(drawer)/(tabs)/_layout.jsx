@@ -31,7 +31,6 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarStyle: Platform.select({
           ios: {
-            position: "absolute",
             height: moderateScale(90),
             justifyContent: "center",
             alignItems: "center",

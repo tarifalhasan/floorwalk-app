@@ -1,12 +1,11 @@
+import ScreenWrapper from "@/components/ScreenWrapper";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useRef, useState } from "react";
 import {
   FlatList,
-  Image,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -124,7 +123,7 @@ export default function SignupScreen() {
               placeholder="Password"
               value={formData.password}
               onChangeText={(text) =>
-                setFormData({ ...formData, password: text })
+                setFormData((prevData) => ({ ...prevData, password: text }))
               }
               secureTextEntry={!showPassword}
               onFocus={() =>
@@ -157,64 +156,59 @@ export default function SignupScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <ScreenWrapper bg="white">
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       >
-        <Image
-          style={styles.leftDecoration}
-          source={require("@/assets/images/left_login.png")}
-        />
-        <Image
-          style={styles.rightDecoration}
-          source={require("@/assets/images/right_login.png")}
-        />
-        <Image
-          source={require("@/assets/images/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
         <FlatList
           ref={flatListRef}
           data={[{ key: "header" }, ...formItems, { key: "footer" }]}
           renderItem={({ item, index }) => {
             if (item.key === "header") {
               return (
-                <View style={styles.headerContainer}>
-                  <Text style={styles.welcomeTitle}>Welcome to</Text>
-                  <Text style={styles.portalTitle}>
-                    <Text style={styles.floorWalk}>FloorWalk</Text>
-                    {"\n"}
-                    Shopper Portal
+                <View
+                  style={{
+                    paddingBottom: verticalScale(40),
+                    rowGap: 6,
+                  }}
+                >
+                  <Text style={styles.signText}>Log In</Text>
+                  <Text style={styles.formSubTitle}>
+                    Login to your FloorWalk Shopper Portal
                   </Text>
                 </View>
               );
             } else if (item.key === "footer") {
               return (
                 <>
+                  <View style={styles.loginLinkContainer}>
+                    <Text style={styles.loginLinkText}>
+                      Already have an account{" "}
+                    </Text>
+                    <Link href={"/Login"}>
+                      <Text style={styles.loginLink}>(Login)</Text>
+                    </Link>
+                  </View>
                   <TouchableOpacity
                     style={styles.signupButton}
                     onPress={handleSignup}
                   >
                     <Text style={styles.signupButtonText}>Create Account</Text>
                   </TouchableOpacity>
-                  <View style={styles.loginLinkContainer}>
-                    <Text style={styles.loginLinkText}>
-                      Already have an account{" "}
-                    </Text>
-                    <Link href={"/Login"}>
-                      <Text style={styles.loginLink}>Login</Text>
-                    </Link>
-                  </View>
-                  <View style={styles.howItWorks}>
-                    <Text style={styles.howItWorksTitle}>How It Works</Text>
-                    <Text style={styles.howItWorksText}>
-                      Watch this 90 seconds video to know how can FloorWalk help
-                      you improve your Consumer Experience.
-                    </Text>
-                  </View>
+                  <Text
+                    style={{
+                      fontSize: scale(12),
+                      textAlign: "center",
+                      paddingTop: verticalScale(12),
+                    }}
+                  >
+                    * By signing up, you agree to our Terms Of Use and
+                    acknowledge you've read our Privacy Policy This site is
+                    protected by reCAPTCHA Enterprise. Google's Privacy Policy_
+                    and Terms Of Service apply.
+                  </Text>
                 </>
               );
             } else {
@@ -228,7 +222,7 @@ export default function SignupScreen() {
           }}
         />
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </ScreenWrapper>
   );
 }
 
@@ -240,48 +234,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  leftDecoration: {
-    width: moderateScale(70),
-    height: verticalScale(150),
-    position: "absolute",
-    top: verticalScale(90),
-    left: 0,
-    zIndex: 1,
-  },
-  rightDecoration: {
-    width: moderateScale(70),
-    height: verticalScale(150),
-    position: "absolute",
-    top: verticalScale(90),
-    right: 0,
-    zIndex: 1,
-  },
+
   content: {
     padding: moderateScale(20),
   },
-  logo: {
-    width: scale(140),
-    height: verticalScale(60),
-    marginTop: verticalScale(30),
-    alignSelf: "center",
-  },
+
   headerContainer: {
     paddingVertical: verticalScale(30),
   },
-  welcomeTitle: {
-    fontSize: moderateScale(30),
-    color: "#003C5D",
+
+  formSubTitle: {
+    fontSize: scale(14),
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: "500",
+    color: "#4B5563",
   },
-  portalTitle: {
-    fontSize: moderateScale(35),
+  signText: {
+    fontSize: moderateScale(26),
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: "600",
   },
-  floorWalk: {
-    color: "#8DC63F",
-  },
+
   input: {
     width: "100%",
     height: verticalScale(45),
@@ -302,6 +275,7 @@ const styles = StyleSheet.create({
     height: verticalScale(45),
     zIndex: 10,
   },
+
   phoneInput: {
     flex: 1,
     height: verticalScale(45),
@@ -322,8 +296,9 @@ const styles = StyleSheet.create({
     height: verticalScale(45),
     paddingHorizontal: moderateScale(15),
     fontSize: moderateScale(14),
-    zIndex: -2,
+    zIndex: 2,
   },
+
   eyeIcon: {
     padding: moderateScale(10),
   },
@@ -354,20 +329,5 @@ const styles = StyleSheet.create({
     fontSize: scale(16),
     fontWeight: "700",
     color: "#0088CC",
-  },
-  howItWorks: {
-    marginTop: verticalScale(30),
-    alignItems: "center",
-  },
-  howItWorksTitle: {
-    fontSize: moderateScale(20),
-    color: "#003366",
-    marginBottom: verticalScale(10),
-  },
-  howItWorksText: {
-    textAlign: "center",
-    color: "#666",
-    fontSize: moderateScale(14),
-    paddingHorizontal: moderateScale(20),
   },
 });

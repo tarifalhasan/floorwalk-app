@@ -1,12 +1,10 @@
+import ScreenWrapper from "@/components/ScreenWrapper";
 import { theme } from "@/constants/theme";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
-import { useVideoPlayer, VideoView } from "expo-video";
 import { useState } from "react";
 
 import {
-  Image,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -28,104 +26,21 @@ export default function LoginScreen() {
     router.push("/home");
   };
 
-  const [country, setCountry] = useState("");
-  const [region, setRegion] = useState("");
-
-  const player = useVideoPlayer(videoSource, (player) => {
-    player.loop = true;
-    player.pause();
-  });
-
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        style={{
-          width: moderateScale(70),
-          height: verticalScale(150),
-          position: "absolute",
-          top: verticalScale(90),
-          left: 0,
-        }}
-        source={require("@/assets/images/left_login.png")}
-      />
-      <Image
-        style={{
-          width: moderateScale(70),
-          height: verticalScale(150),
-          position: "absolute",
-          top: verticalScale(90),
-          right: 0,
-        }}
-        source={require("@/assets/images/right_login.png")}
-      />
-      <Image
-        source={require("@/assets/images/logo.png")}
-        style={[styles.logo, { marginTop: verticalScale(30) }]}
-        resizeMode="contain"
-      />
+    <ScreenWrapper bg={"white"}>
       <View style={styles.content}>
-        {/* Logo */}
-        <View
-          style={{
-            paddingVertical: scale(30),
-          }}
-        >
-          <Text style={styles.welcomeTitle}>Welcome to</Text>
-          <Text style={styles.portalTitle}>
-            <Text style={styles.floorWalk}>FloorWalk</Text>
-            {"\n"}
-            Shopper Portal
-          </Text>
-          <View style={styles.loginOptions}>
-            <TouchableOpacity style={styles.loginOption}>
-              <Text style={styles.loginOptionText}>For Client login</Text>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <Feather name="user" size={scale(20)} color="#007DC1" />
-                <Text
-                  style={[
-                    styles.loginOptionText,
-                    {
-                      color: "#007DC1",
-                      textDecorationLine: "underline",
-                      fontWeight: "500",
-                    },
-                  ]}
-                >
-                  login ?
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginOption}>
-              <Text style={styles.loginOptionText}>For Agency login</Text>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <Feather name="users" size={scale(20)} color="#007DC1" />
-                <Text
-                  style={[
-                    styles.loginOptionText,
-                    {
-                      color: "#007DC1",
-                      textDecorationLine: "underline",
-                      fontWeight: "500",
-                    },
-                  ]}
-                >
-                  login ?
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Login Form */}
         <View style={styles.formContainer}>
-          <Text style={styles.loginText}>
-            Login to your FloorWalk Client Portal
-          </Text>
-
+          <View
+            style={{
+              paddingBottom: verticalScale(40),
+              rowGap: 6,
+            }}
+          >
+            <Text style={styles.loginText}>Log In</Text>
+            <Text style={styles.formSubTitle}>
+              Login to your FloorWalk Shopper Portal
+            </Text>
+          </View>
           {/* Email Input */}
           <TextInput
             style={styles.input}
@@ -214,57 +129,36 @@ export default function LoginScreen() {
           <Link href={"/Signup"}>
             <Text
               style={{
-                fontSize: scale(16),
+                fontSize: scale(15),
                 fontWeight: "700",
                 color: theme.colors.primary,
               }}
             >
-              Sign Up
+              (Sign Up)
             </Text>
           </Link>
         </View>
-        {/* How It Works Section */}
-        <View style={styles.howItWorks}>
-          <Text style={styles.howItWorksTitle}>How It Works</Text>
-          <Text style={styles.howItWorksText}>
-            Watch this 90 seconds video to know how can FloorWalk help you
-            improve your business
-          </Text>
-        </View>
-        <VideoView
-          style={styles.video}
-          player={player}
-          allowsFullscreen
-          allowsPictureInPicture
-        />
       </View>
-    </ScrollView>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
   content: {
-    padding: moderateScale(20),
+    flex: 1,
   },
-  logo: {
-    width: scale(140),
-    height: verticalScale(60),
-    marginTop: verticalScale(10),
-  },
+
   welcomeTitle: {
     fontSize: moderateScale(30),
     color: "#003C5D",
     textAlign: "center",
     fontWeight: "700",
   },
-  portalTitle: {
-    fontSize: moderateScale(35),
+  formSubTitle: {
+    fontSize: scale(14),
     textAlign: "center",
-    fontWeight: "700",
+    fontWeight: "500",
+    color: "#4B5563",
   },
   floorWalk: {
     color: "#8DC63F",
@@ -286,22 +180,13 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "100%",
-    backgroundColor: "#fff",
+
     padding: moderateScale(20),
-    borderRadius: moderateScale(10),
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   loginText: {
-    fontSize: moderateScale(16),
-    marginBottom: verticalScale(20),
+    fontSize: moderateScale(26),
     textAlign: "center",
+    fontWeight: "600",
   },
   input: {
     width: "100%",
@@ -350,26 +235,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: moderateScale(16),
     fontWeight: "600",
-  },
-  howItWorks: {
-    marginTop: verticalScale(30),
-    alignItems: "center",
-  },
-  howItWorksTitle: {
-    fontSize: moderateScale(20),
-    color: "#003366",
-    marginBottom: verticalScale(10),
-  },
-  howItWorksText: {
-    textAlign: "center",
-    color: "#666",
-    fontSize: moderateScale(14),
-    paddingHorizontal: moderateScale(20),
-  },
-
-  video: {
-    width: "100%",
-    height: verticalScale(180),
-    marginTop: verticalScale(8),
   },
 });
